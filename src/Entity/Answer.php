@@ -30,7 +30,7 @@ class Answer
     private $explanation;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $is_correct;
 

@@ -30,7 +30,7 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default": 1})
      */
     private $role;
 

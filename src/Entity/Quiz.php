@@ -30,9 +30,9 @@ class Quiz
     private $updated_at;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean", options={"default": true})
      */
-    private $state;
+    private $is_running;
 
     /**
      * @ORM\ManyToOne(targetEntity=user::class, inversedBy="quizzes")
@@ -78,14 +78,14 @@ class Quiz
         return $this;
     }
 
-    public function getState(): ?string
+    public function getState(): ?bool
     {
-        return $this->state;
+        return $this->is_running;
     }
 
     public function setState(string $state): self
     {
-        $this->state = $state;
+        $this->is_running = $state;
 
         return $this;
     }
