@@ -39,6 +39,11 @@ class Question
      */
     private $quizquestions;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $level;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -132,6 +137,18 @@ class Question
                 $quizquestion->setQuestion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }
