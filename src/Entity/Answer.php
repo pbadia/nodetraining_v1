@@ -35,19 +35,19 @@ class Answer
     private $is_correct;
 
     /**
-     * @ORM\ManyToOne(targetEntity=question::class, inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="answers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quizquestion::class, mappedBy="answer")
+     * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="answer")
      */
-    private $quizquestions;
+    private $quizQuestions;
 
     public function __construct()
     {
-        $this->quizquestions = new ArrayCollection();
+        $this->quizQuestions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,12 +91,12 @@ class Answer
         return $this;
     }
 
-    public function getQuestion(): ?question
+    public function getQuestion(): ?Question
     {
         return $this->question;
     }
 
-    public function setQuestion(?question $question): self
+    public function setQuestion(?Question $question): self
     {
         $this->question = $question;
 
@@ -104,30 +104,30 @@ class Answer
     }
 
     /**
-     * @return Collection|Quizquestion[]
+     * @return Collection|QuizQuestion[]
      */
-    public function getQuizquestions(): Collection
+    public function getQuizQuestions(): Collection
     {
-        return $this->quizquestions;
+        return $this->quizQuestions;
     }
 
-    public function addQuizquestion(Quizquestion $quizquestion): self
+    public function addQuizQuestion(QuizQuestion $quizQuestion): self
     {
-        if (!$this->quizquestions->contains($quizquestion)) {
-            $this->quizquestions[] = $quizquestion;
-            $quizquestion->setAnswer($this);
+        if (!$this->quizQuestions->contains($quizQuestion)) {
+            $this->quizQuestions[] = $quizQuestion;
+            $quizQuestion->setAnswer($this);
         }
 
         return $this;
     }
 
-    public function removeQuizquestion(Quizquestion $quizquestion): self
+    public function removeQuizQuestion(QuizQuestion $quizQuestion): self
     {
-        if ($this->quizquestions->contains($quizquestion)) {
-            $this->quizquestions->removeElement($quizquestion);
+        if ($this->quizQuestions->contains($quizQuestion)) {
+            $this->quizQuestions->removeElement($quizQuestion);
             // set the owning side to null (unless already changed)
-            if ($quizquestion->getAnswer() === $this) {
-                $quizquestion->setAnswer(null);
+            if ($quizQuestion->getAnswer() === $this) {
+                $quizQuestion->setAnswer(null);
             }
         }
 

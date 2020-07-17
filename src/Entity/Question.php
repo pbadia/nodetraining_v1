@@ -8,10 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=QuestionRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository", repositoryClass=QuestionRepository::class)
  */
 class Question
 {
+
+    const DIFFICULTY_LEVEL = [
+        0 => 'beginner',
+        1 => 'intermediate',
+        2 => 'advanced'
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,24 +37,26 @@ class Question
     private $answers;
 
     /**
-     * @ORM\ManyToOne(targetEntity=theme::class, inversedBy="questions")
+     * @ORM\ManyToOne(targetEntity=Theme::class, inversedBy="questions")
      */
     private $theme;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quizquestion::class, mappedBy="question", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="question")
      */
-    private $quizquestions;
+    private $quizQuestions;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default": 0})
      */
     private $level;
 
     public function __construct()
     {
+        // Initializing variables
+        $this->level = 0;
         $this->answers = new ArrayCollection();
-        $this->quizquestions = new ArrayCollection();
+        $this->quizQuestions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,12 +107,12 @@ class Question
         return $this;
     }
 
-    public function getTheme(): ?theme
+    public function getTheme(): ?Theme
     {
         return $this->theme;
     }
 
-    public function setTheme(?theme $theme): self
+    public function setTheme(?Theme $theme): self
     {
         $this->theme = $theme;
 
@@ -113,28 +122,28 @@ class Question
     /**
      * @return Collection|Quizquestion[]
      */
-    public function getQuizquestions(): Collection
+    public function getQuizQuestions(): Collection
     {
-        return $this->quizquestions;
+        return $this->quizQuestions;
     }
 
-    public function addQuizquestion(Quizquestion $quizquestion): self
+    public function addQuizQuestion(QuizQuestion $quizQuestions): self
     {
-        if (!$this->quizquestions->contains($quizquestion)) {
-            $this->quizquestions[] = $quizquestion;
-            $quizquestion->setQuestion($this);
+        if (!$this->quizQuestions->contains($quizQuestions)) {
+            $this->quizQuestions[] = $quizQuestions;
+            $quizQuestions->setQuestion($this);
         }
 
         return $this;
     }
 
-    public function removeQuizquestion(Quizquestion $quizquestion): self
+    public function removeQuizquestion(QuizQuestion $quizQuestions): self
     {
-        if ($this->quizquestions->contains($quizquestion)) {
-            $this->quizquestions->removeElement($quizquestion);
+        if ($this->quizQuestions->contains($quizQuestions)) {
+            $this->quizQuestions->removeElement($quizQuestions);
             // set the owning side to null (unless already changed)
-            if ($quizquestion->getQuestion() === $this) {
-                $quizquestion->setQuestion(null);
+            if ($quizQuestions->getQuestion() === $this) {
+                $quizQuestions->setQuestion(null);
             }
         }
 

@@ -1,6 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<div class="container">
+    <h2>Les dernières questions</h2>
+    <div class="row flex">
+        {% for question in questions %}
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="#">{{ question.id }}</a>
+                        </h5>
+                        <p class="card-text">
+                            {{ question.label }}
+                        </p>
+                        <div class="text-primary">Niveau {{ question.level }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}

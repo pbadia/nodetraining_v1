@@ -35,7 +35,7 @@ class Quiz
     private $is_running;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="quizzes")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="quizzes")
      */
     private $user;
 
@@ -46,6 +46,7 @@ class Quiz
 
     public function __construct()
     {
+        $this->created_at = new \DateTime();
         $this->quizQuestions = new ArrayCollection();
     }
 
@@ -90,12 +91,12 @@ class Quiz
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

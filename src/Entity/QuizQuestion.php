@@ -12,53 +12,53 @@ class QuizQuestion
 {
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=quiz::class, inversedBy="quizQuestions")
+     * @ORM\ManyToOne(targetEntity=Quiz::class, inversedBy="quizQuestions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $quiz;
 
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=question::class, inversedBy="quizquestions")
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="quizQuestions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
 
     /**
-     * @ORM\ManyToOne(targetEntity=answer::class, inversedBy="quizquestions")
+     * @ORM\ManyToOne(targetEntity=Answer::class, inversedBy="quizQuestions")
      */
     private $answer;
 
-    public function getQuiz(): ?quiz
+    public function getQuiz(): ?Quiz
     {
         return $this->quiz;
     }
 
-    public function setQuiz(?quiz $quiz): self
+    public function setQuiz(?Quiz $quiz): self
     {
         $this->quiz = $quiz;
 
         return $this;
     }
 
-    public function getQuestion(): ?question
+    public function getQuestion(): ?Question
     {
         return $this->question;
     }
 
-    public function setQuestion(?question $question): self
+    public function setQuestion(?Question $question): self
     {
         $this->question = $question;
 
         return $this;
     }
 
-    public function getAnswer(): ?answer
+    public function getAnswer(): ?Answer
     {
         return $this->answer;
     }
 
-    public function setAnswer(?answer $answer): self
+    public function setAnswer(?Answer $answer): self
     {
         $this->answer = $answer;
 

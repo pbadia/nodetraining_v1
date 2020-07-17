@@ -19,6 +19,33 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    /**
+     * @param int $level
+     * @return Question[]
+     */
+    public function findAllByLevel(int $level) : array
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.level = :level')
+            ->setParameter('level', $level)
+            ->orderBy('q.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function findLatest() : array
+    {
+        return $this->createQueryBuilder('q')
+            ->setMaxResults(12)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */
