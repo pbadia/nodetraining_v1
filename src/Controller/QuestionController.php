@@ -32,11 +32,31 @@ class QuestionController extends AbstractController
      * @Route("/questions", name = "question.index")
      * @return Response
      */
-    public function index()
+    public function index() : Response
     {
         $lastQuestions = $this->repository->findLatest();
         return $this->render('question/index.html.twig', [
                 'questions' => $lastQuestions
             ]);
+    }
+
+    /**
+     * @Route("/questions/{slug}-{id}", name="question.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Question $question
+     * @param string $slug
+     * @return Response
+     */
+    public function show(Question $question, string $slug) : Response
+    {
+        if ($question->getSlug() !== $slug)
+        {
+            return $this->redirectToRoute('question.show', [
+                'id' => $question->getId(),
+                'slug' => $question->getSlug()
+            ], 301);
+        }
+        return $this->render('question/show.html.twig', [
+            'question' => $question
+        ]);
     }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Editer la question {{ question.id }}' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <h1>Editer la question {{ question.id }}</h1>
+
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-md-6">{{ form_row(form.label) }}</div>
+            <div class="col-md-2">{{ form_row(form.level) }}</div>
+            <div class="col-md-2">{{ form_row(form.theme) }}</div>
+        </div>
+
+        <button class="btn btn-primary">Editer</button>
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

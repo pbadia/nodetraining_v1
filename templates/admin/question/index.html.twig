@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les questions' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <h1>Gérer les questions</h1>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Question</td>
+                <td>Actions</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for question in questions %}
+            <tr>
+                <td>{{ question.label }}</td>
+                <td>
+                    <a href="{{ path ('admin.question.edit', {id: question.id}) }}" class="btn btn-secondary">Editer</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

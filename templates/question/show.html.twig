@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question n° {{ question.id }}{% endblock %}
+
+{% block body %}
+
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col ml-4">
+                <h1>Question n° {{ question.id }}</h1>
+                <h2>{{ question.label }}</h2>
+            </div>
+        </div>
+    </div>
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col">
+            <h3>Thème : {{ question.theme }}</h3>
+            <h3>Difficulté : {{ question.getleveldifficulty }}</h3>
+        </div>
+    </div>
+
+    <nav class="nav nav-bars mb-4"></nav>
+</div>
+
+{% endblock %}

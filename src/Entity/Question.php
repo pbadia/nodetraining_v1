@@ -6,6 +6,7 @@ use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository", repositoryClass=QuestionRepository::class)
@@ -16,7 +17,8 @@ class Question
     const DIFFICULTY_LEVEL = [
         0 => 'beginner',
         1 => 'intermediate',
-        2 => 'advanced'
+        2 => 'advanced',
+        3 => 'update a faire'
     ];
 
     /**
@@ -74,6 +76,11 @@ class Question
         $this->label = $label;
 
         return $this;
+    }
+
+    public function getSlug() : string
+    {
+        return (new Slugify())->slugify($this->label);
     }
 
     /**
@@ -137,7 +144,7 @@ class Question
         return $this;
     }
 
-    public function removeQuizquestion(QuizQuestion $quizQuestions): self
+    public function removeQuizQuestion(QuizQuestion $quizQuestions): self
     {
         if ($this->quizQuestions->contains($quizQuestions)) {
             $this->quizQuestions->removeElement($quizQuestions);
@@ -160,6 +167,20 @@ class Question
         $this->level = $level;
 
         return $this;
+    }
+
+    public function getLevelDifficulty(): string {
+        return self::DIFFICULTY_LEVEL[$this->level];
+    }
+
+    public function getLevelChoices()
+    {
+        $choices = self::DIFFICULTY_LEVEL;
+        $output = [];
+        foreach ($choices as $k => $v) {
+            $output[$v] = $k;
+        }
+        return $output;
     }
 
 }

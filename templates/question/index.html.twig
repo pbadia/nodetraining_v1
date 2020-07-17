@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
+<div class="container mt-4">
     <h2>Les dernières questions</h2>
-    <div class="row flex">
+    <div class="row flex mt-4">
         {% for question in questions %}
             <div class="col-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="#">{{ question.id }}</a>
+                            <a href="{{ path('question.show', {id: question.id, slug: question.slug}) }}">#{{ question.id }}</a>
                         </h5>
                         <p class="card-text">
                             {{ question.label }}
                         </p>
-                        <div class="text-primary">Niveau {{ question.level }}</div>
+                        <div class="text-primary">Difficulté : {{ question.getleveldifficulty }}</div>
                     </div>
                 </div>
             </div>
