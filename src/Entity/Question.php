@@ -17,8 +17,7 @@ class Question
     const DIFFICULTY_LEVEL = [
         0 => 'beginner',
         1 => 'intermediate',
-        2 => 'advanced',
-        3 => 'update a faire'
+        2 => 'advanced'
     ];
 
     /**
@@ -173,14 +172,9 @@ class Question
         return self::DIFFICULTY_LEVEL[$this->level];
     }
 
-    public function getLevelChoices()
+    public static function getLevelChoices()
     {
-        $choices = self::DIFFICULTY_LEVEL;
-        $output = [];
-        foreach ($choices as $k => $v) {
-            $output[$v] = $k;
-        }
-        return $output;
+        return array_flip(self::DIFFICULTY_LEVEL);
     }
 
 }

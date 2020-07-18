@@ -6,6 +6,12 @@
 
     <div class="container mt-4">
 
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <h1>Gérer les questions</h1>
         <table class="table table-striped">
             <thead>
@@ -20,11 +26,21 @@
                 <td>{{ question.label }}</td>
                 <td>
                     <a href="{{ path ('admin.question.edit', {id: question.id}) }}" class="btn btn-secondary">Editer</a>
+                    <form method="post" action="{{ path('admin.question.delete', {id: question.id}) }}" style="display: inline-block"
+                    onsubmit="return confirm('Etes-vous sûr de vouloir supprimer la question {{ question.id }}  ?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.id) }}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+
+        <div class="text-right">
+            <a href="{{ path('admin.question.new') }}" class="btn btn-primary">Ajouter</a>
+        </div>
     </div>
 
 {% endblock %}
