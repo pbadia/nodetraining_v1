@@ -22,8 +22,12 @@
                     <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <a class="btn mr-3" href="/inscription">S&#39;inscrire</a>
-            <a class="btn btn-primary" id="btn-login" href="/login">Se connecter</a>
+            {% if app.user %}
+                <a class="btn btn-primary" id="btn-login" href="{{ path('app_logout') }}">Se déconnecter ({{ app.user.username }})</a>
+            {% else %}
+                <a class="btn mr-3" href="/inscription">S&#39;inscrire</a>
+                <a class="btn btn-primary" id="btn-login" href="{{ path('app_login') }}">Se connecter</a>
+            {% endif %}
         </div>
     </nav>
 
