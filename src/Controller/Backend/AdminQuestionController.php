@@ -9,11 +9,17 @@ use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class AdminQuestionController
+ * @package App\Controller\Backend
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminQuestionController extends AbstractController
 {
     /**
@@ -32,7 +38,7 @@ class AdminQuestionController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin.question.index")
+     * @Route("/admin/question", name="admin.question.index")
      * @return Response
      */
     public function index(): Response
@@ -42,7 +48,7 @@ class AdminQuestionController extends AbstractController
     }
 
     /**
-     * @Route("/admin/new", name="admin.question.new")
+     * @Route("/admin/question/new", name="admin.question.new")
      * @param Request $request
      * @return Response
      */

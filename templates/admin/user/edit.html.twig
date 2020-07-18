@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Editer l\' utilisateur {{ user.id }}' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <h1>Editer l'utilisateur {{ user.id }}</h1>
+
+        {{ include ('admin/user/_form.html.twig', {form: form}) }}
+    </div>
+
+{% endblock %}
+
+
+

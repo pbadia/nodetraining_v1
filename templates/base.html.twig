@@ -18,9 +18,19 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter <span class="sr-only">(current)</span></a>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}" href="{{ path('admin.index') }}">Administration</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% if app.user %}
+                        <a class="nav-link" href="#">Nouveau quizz</a>
+                    {% else %}
+                        <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>
+                    {%  endif %}
                 </li>
+
             </ul>
             {% if app.user %}
                 <a class="btn btn-primary" id="btn-login" href="{{ path('app_logout') }}">Se déconnecter ({{ app.user.username }})</a>
