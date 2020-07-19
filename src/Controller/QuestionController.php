@@ -5,9 +5,14 @@ namespace App\Controller;
 
 
 use App\Entity\Question;
+use App\Entity\QuestionSearch;
+use App\Form\QuestionSearchType;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,13 +35,23 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/questions", name = "question.index")
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
-    public function index() : Response
+    public function index(PaginatorInterface $paginator, Request $request) : Response
     {
-        $lastQuestions = $this->repository->findLatest();
+        $search = new QuestionSearch();
+        $form = $this->createForm(QuestionSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $questions = $paginator->paginate($this->repository->findAllQuery($search),
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/);
+
         return $this->render('question/index.html.twig', [
-                'questions' => $lastQuestions
+                'questions' => $questions,
+                'form'      => $form->createView()
             ]);
     }
 

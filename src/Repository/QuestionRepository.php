@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Question;
+use App\Entity\QuestionSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,25 @@ class QuestionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Question::class);
+    }
+
+    /**
+     * @param QuestionSearch $search
+     * @return Query
+     */
+    public function findAllQuery(QuestionSearch $search) : Query
+    {
+        $queryBuilder = $this->createQueryBuilder('q');
+
+        if ($search->getLevelMin())
+        {
+            $queryBuilder = $queryBuilder
+                ->where('q.level >= :levelMin')
+                ->setParameter('levelMin', $search->getLevelMin());
+
+        }
+
+        return $queryBuilder->getQuery();
     }
 
     /**

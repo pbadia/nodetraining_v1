@@ -1,10 +1,22 @@
-{% extends 'base.html.twig' %}
+<div class="card">
+   <div class="card-body">
+       <h5 class="card-title">
+           <a href="{{ path('question.show', {id: question.id, slug: question.slug}) }}">#{{ question.id }}</a>
+       </h5>
+       <p class="card-text">
+           {{ question.label }}
+       </p>
+       <div
+               {% if question.getlevel == 0 %}
+               class="text-info"
+               {% elseif question.getlevel == 1 %}
+               class="text-warning"
+               {% elseif question.getlevel == 2 %}
+               class="text-danger"
+               {% endif %}
+       >{{ question.getleveldifficulty }}</div>
+   </div>
+</div>
 
-{% block body %}
 
-{% endblock %}
-
-{% block title %}
-
-{% endblock %}
 

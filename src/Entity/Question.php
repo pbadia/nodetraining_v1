@@ -15,9 +15,9 @@ class Question
 {
 
     const DIFFICULTY_LEVEL = [
-        0 => 'beginner',
-        1 => 'intermediate',
-        2 => 'advanced'
+        0 => 'Débutant',
+        1 => 'Intermédiaire',
+        2 => 'Avancé'
     ];
 
     /**

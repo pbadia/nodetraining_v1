@@ -1,25 +1,44 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container mt-4">
-    <h2>Les dernières questions</h2>
-    <div class="row flex">
-        {% for question in questions %}
-            <div class="col-3 mt-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="{{ path('question.show', {id: question.id, slug: question.slug}) }}">#{{ question.id }}</a>
-                        </h5>
-                        <p class="card-text">
-                            {{ question.label }}
-                        </p>
-                        <div class="text-primary">Difficulté : {{ question.getleveldifficulty }}</div>
+    <div class="jumbotron">
+        <div class="container">
+            <h3>Filtrer les résultats :</h3>
+                {{ form_start(form) }}
+                <div class="form-row">
+                    <div class="col-3">
+                        {{ form_label(form.levelMin, null, {errors: []}) }}
+                    </div>
+                    <div class="col-sm">
+                        {{ form_widget(form.levelMin) }}
+                    </div>
+                    {% if not form.vars.valid %}
+                        <div class="col-sm">
+                            {{ form_errors(form.levelMin) }}
+                        </div>
+                    {% endif %}
+                    <div class="col-sm">
+                        <button class="btn btn-primary">Rechercher</button>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+                {{ form_end(form) }}
+        </div>
     </div>
-</div>
+    <div class="container mt-4">
+        <h2>Toutes les questions</h2>
+        <div class="row flex">
+            {% for question in questions %}
+                <div class="col-3 mt-4">
+                    {% include 'question/_question.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {# display navigation #}
+        <div class="navigation mt-4">
+            {{ knp_pagination_render(questions) }}
+        </div>
+
+    </div>
 
 {% endblock %}
