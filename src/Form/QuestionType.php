@@ -20,10 +20,11 @@ class QuestionType extends AbstractType
             ->add('level', ChoiceType::class, [
                 'choices' => Question::getLevelChoices()
             ])
-            ->add('theme', EntityType::class,[
+            ->add('themes', EntityType::class,[
                 'class' => Theme::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir une option',
+                'multiple' => true,
                 'required' => false
             ])
         ;

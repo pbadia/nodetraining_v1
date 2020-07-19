@@ -25,7 +25,7 @@ class Theme
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="theme")
+     * @ORM\ManyToMany(targetEntity=Question::class, mappedBy="themes")
      */
     private $questions;
 
@@ -63,7 +63,7 @@ class Theme
     {
         if (!$this->questions->contains($question)) {
             $this->questions[] = $question;
-            $question->setTheme($this);
+            $question->addTheme($this);
         }
 
         return $this;
@@ -73,10 +73,7 @@ class Theme
     {
         if ($this->questions->contains($question)) {
             $this->questions->removeElement($question);
-            // set the owning side to null (unless already changed)
-            if ($question->getTheme() === $this) {
-                $question->setTheme(null);
-            }
+            $question->removeTheme($this);
         }
 
         return $this;

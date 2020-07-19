@@ -72,7 +72,7 @@ class ThemeAdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/theme/{id}", name="admin.theme.edit", methods="GET\POST")
+     * @Route("/admin/theme/{id}", name="admin.theme.edit", methods="GET|POST")
      * @param Theme $theme
      * @param Request $request
      * @return Response

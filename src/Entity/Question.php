@@ -38,9 +38,9 @@ class Question
     private $answers;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Theme::class, inversedBy="questions")
+     * @ORM\ManyToMany(targetEntity=Theme::class, inversedBy="questions")
      */
-    private $theme;
+    private $themes;
 
     /**
      * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="question")
@@ -58,6 +58,7 @@ class Question
         $this->level = 0;
         $this->answers = new ArrayCollection();
         $this->quizQuestions = new ArrayCollection();
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,14 +114,41 @@ class Question
         return $this;
     }
 
-    public function getTheme(): ?Theme
+    /**
+     * @return Collection
+     */
+    public function getThemes(): Collection
     {
-        return $this->theme;
+        return $this->themes;
     }
 
-    public function setTheme(?Theme $theme): self
+    public function getThemesToString(): string
     {
-        $this->theme = $theme;
+        $result = "";
+        foreach ($this->getThemes() as $i => $item)
+        {
+            $result = $result .  $item->getName();
+            if ($i+1 < $this->getThemes()->count()){
+                $result = $result . " - ";
+            }
+        }
+        return $result;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes[] = $theme;
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        if ($this->themes->contains($theme)) {
+            $this->themes->removeElement($theme);
+        }
 
         return $this;
     }
@@ -176,5 +204,7 @@ class Question
     {
         return array_flip(self::DIFFICULTY_LEVEL);
     }
+
+
 
 }

@@ -3,9 +3,14 @@
        <h5 class="card-title">
            <a href="{{ path('question.show', {id: question.id, slug: question.slug}) }}">#{{ question.id }}</a>
        </h5>
-       <p class="card-text">
-           {{ question.label }}
-       </p>
+       <p class="card-text"></p>
+       <div>
+           {% for theme in question.themes %}
+               <span class="badge badge-pill badge-secondary">{{ theme.name }}</span>
+           {% endfor %}
+       </div>
+       <div>
+           {{ question.label }}</div>
        <div
                {% if question.getlevel == 0 %}
                class="text-info"
