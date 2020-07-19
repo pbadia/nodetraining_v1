@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Editer un thème' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <h1>Editer le thème {{ theme.id }}</h1>
+
+        {{ include ('admin/theme/_form.html.twig', {form: form}) }}
+    </div>
+
+{% endblock %}
