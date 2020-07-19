@@ -33,7 +33,12 @@ class Question
     private $label;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question")
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $explanation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", cascade={"persist"})
      */
     private $answers;
 
@@ -149,6 +154,18 @@ class Question
         if ($this->themes->contains($theme)) {
             $this->themes->removeElement($theme);
         }
+
+        return $this;
+    }
+
+    public function getExplanation(): ?string
+    {
+        return $this->explanation;
+    }
+
+    public function setExplanation(?string $explanation): self
+    {
+        $this->explanation = $explanation;
 
         return $this;
     }

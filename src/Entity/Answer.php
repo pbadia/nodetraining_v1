@@ -25,11 +25,6 @@ class Answer
     private $label;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $explanation;
-
-    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $is_correct;
@@ -63,18 +58,6 @@ class Answer
     public function setLabel(string $label): self
     {
         $this->label = $label;
-
-        return $this;
-    }
-
-    public function getExplanation(): ?string
-    {
-        return $this->explanation;
-    }
-
-    public function setExplanation(?string $explanation): self
-    {
-        $this->explanation = $explanation;
 
         return $this;
     }

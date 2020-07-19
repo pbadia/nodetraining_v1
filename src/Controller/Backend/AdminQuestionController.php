@@ -7,6 +7,7 @@ namespace App\Controller\Backend;
 use App\Entity\Question;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -83,9 +84,26 @@ class AdminQuestionController extends AbstractController
     {
         $form = $this->createForm(QuestionType::class, $question);
 
+        // Store the answers as they were before the update
+        $originalAnswers = new ArrayCollection();
+        foreach ($question->getAnswers() as $answer)
+        {
+            $originalAnswers->add($answer);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($originalAnswers as $answer)
+            {
+                // Check if the answer has been removed, delete it in the database if true
+                if (false === $question->getAnswers()->contains($answer))
+                {
+                    $this->em->remove($answer);
+                }
+            }
+
             $this->em->flush();
             $this->addFlash('success', 'Question modifiée avec succès');
             return $this->redirectToRoute('admin.question.index');
