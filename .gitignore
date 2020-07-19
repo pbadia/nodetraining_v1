@@ -14,3 +14,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+# Jetbrain User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries

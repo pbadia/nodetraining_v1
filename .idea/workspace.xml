@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b83112fe-529d-47f7-bf7d-d1f2e9a8f8c3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/Backend/ThemeAdminController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/theme/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/theme/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/theme/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/theme/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/QuestionType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/QuestionType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/question/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/question/_form.html.twig" afterDir="false" />
-    </list>
+    <list default="true" id="b83112fe-529d-47f7-bf7d-d1f2e9a8f8c3" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +55,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Form/ThemeType.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
@@ -74,7 +64,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/admin/question/_form.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
@@ -442,12 +432,12 @@
       <workItem from="1594993910381" duration="13938000" />
       <workItem from="1595069128654" duration="10771000" />
       <workItem from="1595081110930" duration="13886000" />
-      <workItem from="1595144952985" duration="4866000" />
+      <workItem from="1595144952985" duration="5158000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68939000" />
+    <option name="totallyTimeSpent" value="69231000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="877" extended-state="6" />
@@ -877,13 +867,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Form/ThemeType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/QuestionType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -902,6 +885,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/ThemeType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
         </state>
       </provider>
     </entry>
