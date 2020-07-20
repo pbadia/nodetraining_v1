@@ -3,7 +3,6 @@
 {% block title %}Se connecter{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
     <form method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -32,11 +31,12 @@
                     </div>
                 #}
 
+                <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+
                 <button class="btn btn-primary btn-block" type="submit">
                     Se connecter
                 </button>
             </div>
         </div>
     </form>
-</div>
 {% endblock %}

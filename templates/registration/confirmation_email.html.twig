@@ -1,0 +1,22 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+    <div class="row m-5">
+        <h1>Bienvenue !</h1>
+    </div>
+    <div class="row">
+        <p class="">
+            Merci de confirmer votre adresse en mail en cliquant sur le lien suivant :
+            <a href="{{ signedUrl|raw }}">Confirmer mon adresse email</a>.
+            Ce lien expirera dans {{ expiresAt|date('g') }} heure(s).
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            A très bientôt sur Node Training !
+        </p>
+
+    </div>
+</div>
