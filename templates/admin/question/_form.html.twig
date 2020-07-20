@@ -36,11 +36,13 @@
          data-prototype="{{ formMacros.printAnswerRow(form.answers.vars.prototype)|e('html_attr') }}">
 
         {% for answer in form.answers %}
-
-        <div class="row js-answer mb-2">
-            {{ formMacros.printAnswerRow(answer) }}
-        </div>
+            <div class="row js-answer mb-2">
+                {{ formMacros.printAnswerRow(answer) }}
+            </div>
         {% endfor %}
+
+        {# prevents weird label from showing up when there is none answer yet #}
+        {{ form_widget(form.answers) }}
 
 
 

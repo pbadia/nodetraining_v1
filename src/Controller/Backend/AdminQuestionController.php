@@ -5,11 +5,13 @@ namespace App\Controller\Backend;
 
 
 use App\Entity\Question;
+use App\Entity\QuestionSearch;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,20 +34,27 @@ class AdminQuestionController extends AbstractController
      */
     private $em;
 
-    public function __construct(QuestionRepository $questionRepository, EntityManagerInterface $em)
+    public function __construct(QuestionRepository $repository, EntityManagerInterface $em)
     {
-        $this->questionRepository = $questionRepository;
+        $this->repository = $repository;
         $this->em = $em;
     }
 
     /**
      * @Route("/admin/question", name="admin.question.index")
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        $questions = $this->questionRepository->findAll();
-        return $this->render('admin/question/index.html.twig', compact('questions'));
+        $questions = $paginator->paginate($this->repository->findAllQuery(new QuestionSearch()),
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/);
+
+        return $this->render('admin/question/index.html.twig', [
+            'questions' => $questions,
+        ]);
     }
 
     /**

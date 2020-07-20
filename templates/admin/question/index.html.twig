@@ -41,6 +41,11 @@
         <div class="text-right">
             <a href="{{ path('admin.question.new') }}" class="btn btn-primary">Ajouter</a>
         </div>
+
+        {# display navigation #}
+        <div class="navigation mt-4 d-flex justify-content-center">
+            {{ knp_pagination_render(questions) }}
+        </div>
     </div>
 
 {% endblock %}
