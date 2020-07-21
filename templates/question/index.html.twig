@@ -1,29 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block body_header %}
     <div class="jumbotron">
         <div class="container">
             <h3>Filtrer les résultats :</h3>
-                {{ form_start(form) }}
-                <div class="form-row">
-                    <div class="col-3">
-                        {{ form_label(form.levelMin, null, {errors: []}) }}
-                    </div>
-                    <div class="col-sm">
-                        {{ form_widget(form.levelMin) }}
-                    </div>
-                    {% if not form.vars.valid %}
-                        <div class="col-sm">
-                            {{ form_errors(form.levelMin) }}
-                        </div>
-                    {% endif %}
-                    <div class="col-sm">
-                        <button class="btn btn-primary">Rechercher</button>
-                    </div>
+            {{ form_start(form) }}
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    {{ form_label(form.levelMin, null, {errors: []}) }}
                 </div>
-                {{ form_end(form) }}
+                <div class="col-2">
+                    {{ form_widget(form.levelMin) }}
+                </div>
+                {% if not form.vars.valid %}
+                    <div class="col-auto">
+                        {{ form_errors(form.levelMin) }}
+                    </div>
+                {% endif %}
+                <div class="col-auto">
+                    <button class="btn btn-primary">Rechercher</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block body %}
+
     <div class="container mt-4">
         <h2>Toutes les questions</h2>
         <div class="row flex">
