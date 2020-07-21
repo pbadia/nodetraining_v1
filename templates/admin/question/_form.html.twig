@@ -32,6 +32,8 @@
             {{ form_row(form.themes) }}
         </div>
     </div>
+    {{ form_row(form.imageFile) }}
+
     <h3>Réponses</h3>
     <div class="js-answers-wrapper"
          data-prototype="{{ formMacros.printAnswerRow(form.answers.vars.prototype)|e('html_attr') }}">
@@ -44,8 +46,6 @@
 
         {# prevents weird label from showing up when there is none answer yet #}
         {{ form_widget(form.answers) }}
-
-
 
     </div>
 

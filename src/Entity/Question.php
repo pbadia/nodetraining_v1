@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository", repositoryClass=QuestionRepository::class)
+ * @Vich\Uploadable
  */
 class Question
 {
@@ -36,6 +39,23 @@ class Question
      * @ORM\Column(type="text", nullable=true)
      */
     private $explanation;
+
+    /**
+     * @Vich\UploadableField(mapping="question_image", fileNameProperty="imageName")
+     * @var File|null
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     */
+    private $imageName;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", cascade={"persist"})
@@ -86,6 +106,36 @@ class Question
     public function getSlug() : string
     {
         return (new Slugify())->slugify($this->label);
+    }
+
+
+    /**
+     * @param File|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 
     /**
@@ -222,6 +272,21 @@ class Question
         return array_flip(self::DIFFICULTY_LEVEL);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
 
 }

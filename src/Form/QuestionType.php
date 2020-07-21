@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class QuestionType extends AbstractType
 {
@@ -30,6 +31,9 @@ class QuestionType extends AbstractType
                 'placeholder' => 'Choisir une option',
                 'multiple' => true,
                 'required' => false
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
             ])
             ->add('answers', CollectionType::class, [
                 'entry_type' => AnswerType::class,

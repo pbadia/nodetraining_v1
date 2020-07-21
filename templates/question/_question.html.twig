@@ -1,4 +1,7 @@
 <div class="card">
+    {% if question.imageName %}
+        <img src="{{ vich_uploader_asset(question, 'imageFile') }}" alt="card-img-top" style="width: 100%; height: auto">
+    {% endif %}
    <div class="card-body">
        <h5 class="card-title">
            <a href="{{ path('question.show', {id: question.id, slug: question.slug}) }}">#{{ question.id }}</a>
@@ -19,7 +22,9 @@
                {% elseif question.getlevel == 2 %}
                class="text-danger"
                {% endif %}
-       >{{ question.getleveldifficulty }}</div>
+       >
+           {{ question.getleveldifficulty }}
+       </div>
    </div>
 </div>
 
