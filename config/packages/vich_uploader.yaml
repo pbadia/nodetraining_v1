@@ -3,7 +3,7 @@ vich_uploader:
 
     mappings:
         question_image:
-            uri_prefix: '/public/images/questions'
+            uri_prefix: '/images/questions'
             upload_destination : '%kernel.project_dir%/public/images/questions'
             namer:
                 service:

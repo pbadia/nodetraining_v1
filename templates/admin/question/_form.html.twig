@@ -32,6 +32,9 @@
             {{ form_row(form.themes) }}
         </div>
     </div>
+
+    <img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('thumbnail') }}" alt="card-img-top" style="width: 100%; height: auto">
+
     {{ form_row(form.imageFile) }}
 
     <h3>Réponses</h3>
