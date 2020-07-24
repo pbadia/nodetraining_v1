@@ -30,10 +30,13 @@ class QuestionType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir une option',
                 'multiple' => true,
-                'required' => false
+                'expanded' => true,
+                'required' => false,
             ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
+                'image_uri' => false,
+                'download_uri' => false,
             ])
             ->add('answers', CollectionType::class, [
                 'entry_type' => AnswerType::class,

@@ -31,7 +31,7 @@
                 {% endif %}
                 <li class="nav-item">
                     {% if app.user %}
-                        <a class="nav-link" href="#">Nouveau quizz</a>
+                        <a class="nav-link" href="{{ path('quiz.new') }}">Nouveau quizz</a>
                     {% else %}
                         <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>
                     {%  endif %}
@@ -52,7 +52,6 @@
 
     <div class="container mt-4">
         {% block body %}
-            {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </div>
 

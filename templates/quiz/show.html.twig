@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quizz{% endblock %}
+
+{% block body %}
+
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col ml-4">
+                <h1>Question n° </h1>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+
+<div class="container mt-4">
+
+    {% for question in questions %}
+    <div class="row">
+        <div class="col">
+            <p>{{ question.label }}</p>
+            <h3>Thème : {{ question.themesToString }}</h3>
+            <h3>Difficulté : {{ question.getleveldifficulty }}</h3>
+        </div>
+    </div>
+    {% endfor %}
+
+
+    <nav class="nav nav-bars mb-4"></nav>
+</div>
+
+{% endblock %}

@@ -6,7 +6,9 @@ use App\Entity\Question;
 use App\Entity\QuestionSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use DoctrineExtensions\Query\Mysql\Rand;
 
 /**
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,6 +40,24 @@ class QuestionRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder->getQuery();
+    }
+
+    /**
+     * @param int $nbOfQuestions
+     * @return Query
+     */
+    public function findRandomResultsQuery(int $nbOfQuestions)
+    {
+        $qb = $this->createQueryBuilder('q');
+
+        $qb = $qb->orderBy('RAND()');
+
+        if ($nbOfQuestions){
+            $qb->setMaxResults($nbOfQuestions);
+        }
+
+        //return $queryBuilder->getQuery();
+        return $qb->getQuery()->getResult();
     }
 
     /**
