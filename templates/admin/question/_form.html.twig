@@ -20,8 +20,11 @@
         <div class="col-md-8">
             {{ form_row(form.label) }}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ form_row(form.level) }}
+        </div>
+        <div class="col-md-1">
+            {{ form_row(form.available) }}
         </div>
     </div>
     <div class="row">
@@ -40,7 +43,7 @@
             {{ form_row(form.imageFile) }}
         </div>
         <div class="col-md-4">
-            <img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('thumbnail') }}" alt="card-img-top" style="width: 100%; height: auto">
+            {% if question.imageName is not null  %}<img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('thumbnail') }}" alt="card-img-top" style="width: 100%; height: auto">{% endif %}
         </div>
     </div>
 

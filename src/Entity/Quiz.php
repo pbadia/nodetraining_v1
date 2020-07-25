@@ -40,7 +40,11 @@ class Quiz
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="quiz", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity=QuizQuestion::class,
+     *     mappedBy="quiz",
+     *     orphanRemoval=true),
+     *     cascade={"persist"}
      */
     private $quizQuestions;
 
@@ -48,6 +52,7 @@ class Quiz
     {
         $this->created_at = new \DateTime();
         $this->quizQuestions = new ArrayCollection();
+        $this->is_running = true;
     }
 
     public function getId(): ?int
@@ -79,12 +84,12 @@ class Quiz
         return $this;
     }
 
-    public function getState(): ?bool
+    public function getIsRunning(): ?bool
     {
         return $this->is_running;
     }
 
-    public function setState(string $state): self
+    public function setIsRunning(string $state): self
     {
         $this->is_running = $state;
 

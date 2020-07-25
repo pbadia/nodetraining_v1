@@ -7,7 +7,7 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col ml-4">
-                <h1>Question n° </h1>
+                <h1>Quizz</h1>
                 <h2></h2>
             </div>
         </div>
@@ -15,15 +15,31 @@
 
 <div class="container mt-4">
 
-    {% for question in questions %}
+    {% if not form.vars.valid %}
+        <ul>
+            {# Loop through every form item #}
+            {% for child in form.children %}
+                {# Display the errors of the form item #}
+                {%for error in child.vars.errors%}
+                    <li>{{error.message}}</li>
+                {%endfor%}
+            {%endfor%}
+        </ul>
+    {%endif%}
+
+
     <div class="row">
         <div class="col">
-            <p>{{ question.label }}</p>
-            <h3>Thème : {{ question.themesToString }}</h3>
-            <h3>Difficulté : {{ question.getleveldifficulty }}</h3>
+
+            <h2>{{ quizquestion.quiz.id}} {{ quizquestion.question.id }}</h2>
+                <p>{{ quizquestion.question.label }}</p>
+
+            {{ form_start(form) }}
+            {{ form_end(form) }}
         </div>
     </div>
-    {% endfor %}
+
+    <button class="btn btn-primary float-right">Valider</button>
 
 
     <nav class="nav nav-bars mb-4"></nav>

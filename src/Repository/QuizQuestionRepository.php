@@ -19,22 +19,25 @@ class QuizQuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, QuizQuestion::class);
     }
 
-    // /**
-    //  * @return QuizQuestion[] Returns an array of QuizQuestion objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $quizId
+     * @return QuizQuestion[] Returns an array of QuizQuestion objects
+     */
+    public function findNotAnswered($quizId)
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('q');
+        $qb
+            ->andWhere('q.quiz = :val')
+            ->setParameter('val', $quizId)
+            ->andWhere('q.answer IS NULL')
+            //->andWhere($qb->expr()->isNotNull('q.answer'))
+            ->orderBy('q.question', 'ASC')
+            ->setMaxResults(1)
         ;
+
+        return $qb->getQuery()->getResult();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?QuizQuestion

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\Theme;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,7 +13,10 @@ class QuestionFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // Création des thèmes
+        $faker = Factory::create('fr_FR');
+
+
+        // Create themes
         $theme1 = new Theme();
         $theme1->setName("Ransomware");
         $manager->persist($theme1);
@@ -35,13 +39,14 @@ class QuestionFixtures extends Fixture
         $theme6->setName("Sauvegarde");
         $manager->persist($theme6);
 
-
-        $faker = Factory::create('fr_FR');
-
+        // Create questions
         for ($i = 1; $i < 100; $i++)
         {
             $question = new Question();
+
+            $question->setLabel($faker->sentence());
             $question->setLevel(rand(0, 2));
+
             $r = rand(0,5);
             switch ($r) {
                 case 0 :
@@ -59,9 +64,22 @@ class QuestionFixtures extends Fixture
             }
             $r = rand(0, 1);
             if ($r == 1) $question->addTheme($theme6);
-            $question->setLabel($faker->sentence());
 
+            $r = rand(0,1);
+            if ($r == 1) $question->setAvailable(true);
+
+            for ($j = 1; $j < 4; $j++)
+            {
+                $answer = new Answer();
+                $answer->setLabel($faker->sentence());
+                $answer->setQuestion($question);
+                $r = rand(0,1);
+                if ($r == 1) $answer->setIsCorrect(true);
+                $manager->persist($answer);
+
+            }
             $manager->persist($question);
+
         }
 
         $manager->flush();

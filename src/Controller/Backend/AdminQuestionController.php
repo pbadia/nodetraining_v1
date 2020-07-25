@@ -28,7 +28,7 @@ class AdminQuestionController extends AbstractController
     /**
      * @var QuestionRepository
      */
-    private $questionRepository;
+    private $repository;
     /**
      * @var EntityManagerInterface
      */

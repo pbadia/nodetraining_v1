@@ -41,13 +41,18 @@ class Question
     private $explanation;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $available;
+
+    /**
      * @Vich\UploadableField(mapping="question_image", fileNameProperty="imageName")
      * @var File|null
      */
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @var string|null
      */
     private $imageName;
@@ -81,6 +86,7 @@ class Question
     {
         // Initializing variables
         $this->level = 0;
+        $this->available = false;
         $this->answers = new ArrayCollection();
         $this->quizQuestions = new ArrayCollection();
         $this->themes = new ArrayCollection();
@@ -108,9 +114,19 @@ class Question
         return (new Slugify())->slugify($this->label);
     }
 
+    public function getAvailable() : bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available)
+    {
+        $this->available = $available;
+    }
 
     /**
      * @param File|null $imageFile
+     * @throws \Exception
      */
     public function setImageFile(?File $imageFile = null): void
     {

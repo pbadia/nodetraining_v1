@@ -43,6 +43,12 @@ class Answer
     public function __construct()
     {
         $this->quizQuestions = new ArrayCollection();
+        $this->setIsCorrect(false);
+    }
+
+    public function __toString()
+    {
+        return $this->label;
     }
 
     public function getId(): ?int

@@ -48,9 +48,9 @@ class QuestionRepository extends ServiceEntityRepository
      */
     public function findRandomResultsQuery(int $nbOfQuestions)
     {
-        $qb = $this->createQueryBuilder('q');
-
-        $qb = $qb->orderBy('RAND()');
+        $qb = $this->createQueryBuilder('q')
+            ->andWhere('q.available = true')
+            ->orderBy('RAND()');
 
         if ($nbOfQuestions){
             $qb->setMaxResults($nbOfQuestions);
