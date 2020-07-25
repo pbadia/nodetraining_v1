@@ -31,15 +31,24 @@
     <div class="row">
         <div class="col">
 
-            <h2>{{ quizquestion.quiz.id}} {{ quizquestion.question.id }}</h2>
+            <h2>Quiz
+                {{ quizquestion.quiz.id}}
+                Question
+                {{ quizquestion.question.id }}
+                QuizQuestion
+                {{ quizquestion.id}}
+            </h2>
                 <p>{{ quizquestion.question.label }}</p>
 
             {{ form_start(form) }}
+
+            <button class="btn btn-primary float-right">Valider</button>
+
+
             {{ form_end(form) }}
         </div>
     </div>
 
-    <button class="btn btn-primary float-right">Valider</button>
 
 
     <nav class="nav nav-bars mb-4"></nav>

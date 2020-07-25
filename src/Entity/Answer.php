@@ -36,7 +36,7 @@ class Answer
     private $question;
 
     /**
-     * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="answer")
+     * @ORM\ManyToMany(targetEntity=QuizQuestion::class, mappedBy="answers")
      */
     private $quizQuestions;
 

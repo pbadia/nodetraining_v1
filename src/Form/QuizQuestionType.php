@@ -37,13 +37,12 @@ class QuizQuestionType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])*/
-            ->add('answer', EntityType::class, [
+            ->add('answers', EntityType::class, [
                 'class' => Answer::class,
                 'choices' => $this->fillAnswers($quizQuestion),
                 'expanded' => true,
                 'multiple' => true,
-            ])
-            ->add('save', SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

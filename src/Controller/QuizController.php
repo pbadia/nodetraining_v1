@@ -91,7 +91,7 @@ class QuizController extends AbstractController
      * @param QuizQuestionRepository $quizQuestionRepository
      * @return RedirectResponse|Response
      */
-    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository, LoggerInterface $logger)
+    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository)
     {
         // Gets a quizQuestion item that has not been answered
         $quizQuestion = $quizQuestionRepository->findNotAnswered($quiz->getId());
@@ -100,26 +100,23 @@ class QuizController extends AbstractController
         if (empty($quizQuestion))
         {
             // Render the quiz results
-            return $this->render('question/index.html.twig', [
+            return $this->redirectToRoute('question.index');
+            /*return $this->render('question/index.html.twig', [
                 'quiz' => $quiz,
-            ]);
+            ]);*/
         }
 
+
         $quizQuestion = $quizQuestion[0];
+
 
         // Create the form
         $form = $this->createForm(QuizQuestionType::class, $quizQuestion);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted())
-        {
-            $logger->debug("FOOOOOOOOOOOOOOOOORM");
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($quizQuestion);
             $this->em->flush();
-            $this->addFlash('success', 'Question' . $quizQuestion->getQuiz()->getId() . 'répondue');
             return $this->redirectToRoute('quiz.play', [
                 'id' => $quiz->getId()]);
         }

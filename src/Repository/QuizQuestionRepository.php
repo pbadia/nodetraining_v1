@@ -29,8 +29,9 @@ class QuizQuestionRepository extends ServiceEntityRepository
         $qb
             ->andWhere('q.quiz = :val')
             ->setParameter('val', $quizId)
-            ->andWhere('q.answer IS NULL')
-            //->andWhere($qb->expr()->isNotNull('q.answer'))
+            ->andWhere('q.answers is empty')
+            //->having('count(q.answers) = 0')
+            //->andWhere('q.answer IS NULL')
             ->orderBy('q.question', 'ASC')
             ->setMaxResults(1)
         ;
