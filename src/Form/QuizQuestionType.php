@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuizQuestionType extends AbstractType
@@ -32,17 +34,13 @@ class QuizQuestionType extends AbstractType
         $quizQuestion = $builder->getData();
 
         $builder
-            /*->add('answer', ChoiceType::class, [
-                'choices' => $this->fillAnswers($quizQuestion),
-                'expanded' => true,
-                'multiple' => true,
-            ])*/
             ->add('answers', EntityType::class, [
                 'class' => Answer::class,
                 'choices' => $this->fillAnswers($quizQuestion),
                 'expanded' => true,
                 'multiple' => true,
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -54,14 +52,6 @@ class QuizQuestionType extends AbstractType
 
     private function fillAnswers(QuizQuestion $quizQuestion)
     {
-        $results = $this->answerRepository->findByQuestion($quizQuestion->getQuestion()->getId());
-
-        /*foreach ($results as $answer)
-        {
-            $answers[] = array($answer->getLabel() => $answer->getId());
-        }
-
-        return $answers;*/
-        return $results;
+        return $this->answerRepository->findByQuestion($quizQuestion->getQuestion()->getId());
     }
 }
