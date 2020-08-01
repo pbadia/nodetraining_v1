@@ -6,27 +6,22 @@ namespace App\Controller;
 
 use App\Entity\Quiz;
 use App\Entity\QuizQuestion;
-use App\Form\AnswerType;
 use App\Form\QuizQuestionType;
-use App\Form\QuizType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizQuestionRepository;
 use App\Repository\QuizRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class QuizController
  * @package App\Controller
- * @IsGranted("ROLE_ADMIN")
+ * @IsGranted("ROLE_USER")
  */
 class QuizController extends AbstractController
 {
@@ -56,6 +51,10 @@ class QuizController extends AbstractController
      * @return Response
      */
     public function new(QuestionRepository $questionRepository){
+
+        // Check if a user is actually connected
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         // Get the current logged on user
         $user = $this->getUser();
 
@@ -93,6 +92,8 @@ class QuizController extends AbstractController
      */
     public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository)
     {
+        // Check if the current user can access this quiz
+        $this->denyAccessUnlessGranted('QUIZ_VIEW', $quiz);
         // Gets a quizQuestion item that has not been answered
         $quizQuestion = $quizQuestionRepository->findNotAnswered($quiz->getId());
 
@@ -106,9 +107,7 @@ class QuizController extends AbstractController
             ]);*/
         }
 
-
         $quizQuestion = $quizQuestion[0];
-
 
         // Create the form
         $form = $this->createForm(QuizQuestionType::class, $quizQuestion);
