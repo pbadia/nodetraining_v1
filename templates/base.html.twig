@@ -30,11 +30,17 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    {% if app.user %}
-                        <a class="nav-link" href="{{ path('quiz.new') }}">Nouveau quizz</a>
-                    {% else %}
-                        <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>
-                    {%  endif %}
+                    {% if app.request.get('_route') == 'home' %}
+                        {% if app.user %}
+                            {% if quiz %}
+                                <a class="nav-link" href="{{ path('quiz.play', {'id': quiz.id}) }}">Reprendre le quizz</a>
+                            {% else %}
+                                <a class="nav-link" href="{{ path('quiz.new') }}">Nouveau quizz</a>
+                            {%  endif %}
+                        {% else %}
+                            <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>
+                        {%  endif %}
+                    {% endif %}
                 </li>
 
             </ul>

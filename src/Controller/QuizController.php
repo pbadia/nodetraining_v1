@@ -100,7 +100,7 @@ class QuizController extends AbstractController
         // If all the questions have been answered
         if (empty($quizQuestion))
         {
-            // Render the quiz results
+            // Todo Render the quiz results
             return $this->redirectToRoute('question.index');
             /*return $this->render('question/index.html.twig', [
                 'quiz' => $quiz,
