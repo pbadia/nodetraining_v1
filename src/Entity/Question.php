@@ -43,7 +43,7 @@ class Question
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $available;
+    private $is_available;
 
     /**
      * @Vich\UploadableField(mapping="question_image", fileNameProperty="imageName")
@@ -82,11 +82,13 @@ class Question
      */
     private $level;
 
+
     public function __construct()
     {
         // Initializing variables
         $this->level = 0;
-        $this->available = false;
+        $this->is_available = false;
+        $this->is_multiple = false;
         $this->answers = new ArrayCollection();
         $this->quizQuestions = new ArrayCollection();
         $this->themes = new ArrayCollection();
@@ -114,14 +116,14 @@ class Question
         return (new Slugify())->slugify($this->label);
     }
 
-    public function getAvailable() : bool
+    public function getIsAvailable() : bool
     {
-        return $this->available;
+        return $this->is_available;
     }
 
-    public function setAvailable(bool $available)
+    public function setIsAvailable(bool $is_available)
     {
-        $this->available = $available;
+        $this->is_available = $is_available;
     }
 
     /**

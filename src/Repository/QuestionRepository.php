@@ -49,7 +49,7 @@ class QuestionRepository extends ServiceEntityRepository
     public function findRandomResultsQuery(int $nbOfQuestions)
     {
         $qb = $this->createQueryBuilder('q')
-            ->andWhere('q.available = true')
+            ->andWhere('q.is_available = true')
             ->orderBy('RAND()');
 
         if ($nbOfQuestions){
@@ -86,6 +86,8 @@ class QuestionRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+
 
     // /**
     //  * @return Question[] Returns an array of Question objects

@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\Answer;
 use App\Entity\QuizQuestion;
+use App\Form\DataTransformer\CollectionToAnswerTransformer;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,15 +33,30 @@ class QuizQuestionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $quizQuestion = $builder->getData();
+       $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($builder){
+                $quizQuestion = $event->getData();
+                $form = $event->getForm();
 
-        $builder
-            ->add('answers', EntityType::class, [
-                'class' => Answer::class,
-                'choices' => $this->fillAnswers($quizQuestion),
-                'expanded' => true,
-                'multiple' => true,
-            ]);
+
+                if ($this->answerRepository->getIsMultipleQuestion($quizQuestion->getQuestion()->getId())){
+                    $form->add('answers', EntityType::class, [
+                        'class' => Answer::class,
+                        'choices' => $this->fillAnswers($quizQuestion),
+                        'expanded' => true,
+                        'multiple' => true,
+                    ]);
+                } else {
+                    $form->add('answers', EntityType::class, [
+                        'class' => Answer::class,
+                        'choices' => $this->fillAnswers($quizQuestion),
+                        'expanded' => true,
+                        'multiple' => false,
+                        'model_transformer' => new CollectionToArrayTransformer(),
+                    ]);
+                }
+            })
+        ;
 
     }
 

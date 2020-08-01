@@ -66,7 +66,7 @@ class QuestionFixtures extends Fixture
             if ($r == 1) $question->addTheme($theme6);
 
             $r = rand(0,1);
-            if ($r == 1) $question->setAvailable(true);
+            if ($r == 1) $question->setIsAvailable(true);
 
             for ($j = 1; $j < 4; $j++)
             {

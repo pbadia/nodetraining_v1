@@ -22,7 +22,7 @@ class QuestionType extends AbstractType
         $builder
             ->add('label')
             ->add('explanation')
-            ->add('available')
+            ->add('is_available')
             ->add('level', ChoiceType::class, [
                 'choices' => Question::getLevelChoices()
             ])
