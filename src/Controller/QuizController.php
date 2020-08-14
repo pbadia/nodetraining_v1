@@ -7,10 +7,12 @@ namespace App\Controller;
 use App\Entity\Quiz;
 use App\Entity\QuizQuestion;
 use App\Form\QuizQuestionType;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizQuestionRepository;
 use App\Repository\QuizRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,7 +52,7 @@ class QuizController extends AbstractController
      * @param QuestionRepository $questionRepository
      * @return Response
      */
-    public function new(QuestionRepository $questionRepository){
+    public function new(QuestionRepository $questionRepository, QuizRepository $quizRepository){
 
         // Check if a user is actually connected
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -58,12 +60,26 @@ class QuizController extends AbstractController
         // Get the current logged on user
         $user = $this->getUser();
 
+        // Check if a quiz is already running
+        $quiz = $quizRepository->findByUser($this->getUser()->getId(), true);
+
+        // If a quiz is running, redirect to it
+        if (!empty($quiz)) {
+            return $this->redirectToRoute('quiz.play', [
+                'id' => $quiz[0]->getId()]);
+        }
+
         // Pick random questions for the quiz
         $questions = $questionRepository->findRandomResultsQuery(5);
 
         // Create the quiz for the current logged on user
         $quiz = new Quiz();
         $quiz->setUser($user);
+
+        // Todo set the quiz number
+        $quiz->setNumber($quizRepository->getMaxNumber($user->getId()) + 1);
+
+        // Todo card deck admin + index question, etc
 
         // Create the QuizQuestion items
         foreach ($questions as $question)
@@ -90,7 +106,9 @@ class QuizController extends AbstractController
      * @param QuizQuestionRepository $quizQuestionRepository
      * @return RedirectResponse|Response
      */
-    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository)
+    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository, AnswerRepository $answerRepository
+    , LoggerInterface $logger
+         )
     {
         // Check if the current user can access this quiz
         $this->denyAccessUnlessGranted('QUIZ_VIEW', $quiz);
@@ -100,11 +118,14 @@ class QuizController extends AbstractController
         // If all the questions have been answered
         if (empty($quizQuestion))
         {
-            // Todo Render the quiz results
-            return $this->redirectToRoute('question.index');
-            /*return $this->render('question/index.html.twig', [
-                'quiz' => $quiz,
-            ]);*/
+            // Set the quiz as finished
+            $quiz->setIsRunning(false);
+            $this->em->persist($quiz);
+            $this->em->flush();
+
+            // Redirect to the quiz results
+            return $this->redirectToRoute('quiz.result', [
+                'id' => $quiz->getId()]);
         }
 
         $quizQuestion = $quizQuestion[0];
@@ -114,8 +135,45 @@ class QuizController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Get the correct answers for the current question
+            $correctAnswers = $answerRepository->findByQuestion($quizQuestion->getQuestion()->getId(), true);
+            $givenAnswers = $quizQuestion->getAnswers();
+            $correctAnswersNumber = 0;
+            $wrongAnswersNumber = 0;
+
+            // Calculate the result
+            foreach ($givenAnswers as $answer)
+            {
+                if (in_array($answer, $correctAnswers)){
+                    $correctAnswersNumber++;
+                }
+                else $wrongAnswersNumber++;
+            }
+
+            $logger->critical('correct / given answers : ' . count($correctAnswers) . ' / ' . count($givenAnswers));
+            $logger->critical('number of correct answers : ' . $correctAnswersNumber);
+            $logger->critical('number of wrong answers :' . $wrongAnswersNumber);
+
+            // There is at least one correct answer
+            if ($correctAnswersNumber != 0){
+                // There are only correct answers
+                if ($correctAnswersNumber == count($correctAnswers) && $wrongAnswersNumber == 0){
+                    // Correct
+                    $quizQuestion->setResult(2);
+                } else {
+                    // Partially correct
+                    $quizQuestion->setResult(1);
+                }
+            } else {
+                // Wrong answers only
+                $quizQuestion->setResult(0);
+            }
+
             $this->em->persist($quizQuestion);
             $this->em->flush();
+
+            // Redirect to the next question
             return $this->redirectToRoute('quiz.play', [
                 'id' => $quiz->getId()]);
         }
@@ -125,5 +183,45 @@ class QuizController extends AbstractController
             'form' => $form->createView(),
             'quizquestion' => $quizQuestion
         ]);
+    }
+
+    /**
+     * @Route("/quiz/result/{id}", name="quiz.result")
+     * @param Quiz $quiz
+     * @return Response
+     */
+    public function result(Quiz $quiz)
+    {
+        // Check if the current user can access this quiz
+        $this->denyAccessUnlessGranted('QUIZ_VIEW', $quiz);
+
+        // Get the quizQuestion objects to get the results
+        $quizQuestions = $quiz->getQuizQuestions();
+
+        // Display the quiz result
+        return $this->render('quiz/result.html.twig', [
+            'quizNumber' => $quiz->getNumber(),
+            'quizQuestions' => $quizQuestions
+        ]);
+    }
+
+    /**
+     * @Route("/quiz/results", name="quiz.results")
+     * @param QuizRepository $repository
+     */
+    public function results(QuizRepository $repository)
+    {
+        // Todo use voter
+        // Check if a user is actually connected
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        // Get the current logged on user
+        $user = $this->getUser();
+
+        // Get the quizzes the user has played
+        $quizzes = $repository->findByUser($user->getId());
+
+        // Get the quizQuestion objects to get the results
+
     }
 }

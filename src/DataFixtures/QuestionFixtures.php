@@ -45,6 +45,7 @@ class QuestionFixtures extends Fixture
             $question = new Question();
 
             $question->setLabel($faker->sentence());
+            $question->setExplanation($faker->text());
             $question->setLevel(rand(0, 2));
 
             $r = rand(0,5);

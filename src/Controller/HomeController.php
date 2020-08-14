@@ -14,14 +14,15 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
+     * @param QuizRepository $repository
      * @return Response
      */
-    public function index(QuizRepository $repository, LoggerInterface $logger){
+    public function index(QuizRepository $repository){
 
         // If a user is connected, check if a quiz is running
         $quiz = [];
         if ($this->isGranted('ROLE_USER')) {
-            $quiz = $repository->findRunningByUser($this->getUser()->getId());
+            $quiz = $repository->findByUser($this->getUser()->getId(), true);
         }
 
         // Set the quiz if it has been found

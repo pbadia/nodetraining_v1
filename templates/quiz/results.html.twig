@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body_header %}
+    <div class="jumbotron">
+        <div class="container">
+            <h3>Filtrer les résultats :</h3>{#
+            {{ form_start(form) }}
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    {{ form_label(form.levelMin, null, {errors: []}) }}
+                </div>
+                <div class="col-2">
+                    {{ form_widget(form.levelMin) }}
+                </div>
+                {% if not form.vars.valid %}
+                    <div class="col-auto">
+                        {{ form_errors(form.levelMin) }}
+                    </div>
+                {% endif %}
+                <div class="col-auto">
+                    <button class="btn btn-primary">Rechercher</button>
+                </div>
+            </div>
+            {{ form_end(form) }}#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <h2>Mes résultats</h2>
+        <div class="row flex">
+            {% for question in questions %}
+                <div class="col-3 mt-4">
+                    {% include 'question/_question.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {# display navigation #}
+        <div class="navigation mt-4 d-flex justify-content-center">
+            {{ knp_pagination_render(questions) }}
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class QuizQuestion
 {
+    const QUESTION_RESULT = [
+        0 => 'Faux',
+        1 => 'Partiellement correct',
+        2 => 'Correct'
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -34,8 +40,14 @@ class QuizQuestion
      */
     private $answers;
 
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $result;
+
     public function __construct()
     {
+        $this->result = self::QUESTION_RESULT[0];
         $this->answers = new ArrayCollection();
     }
 
@@ -92,5 +104,21 @@ class QuizQuestion
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResult(): ?int
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param mixed $result
+     */
+    public function setResult($result): void
+    {
+        $this->result = $result;
     }
 }

@@ -1,0 +1,60 @@
+<div
+        {% if quizQuestion.result == 0 %}
+            class="card border-danger"
+        {% elseif quizQuestion.result == 1 %}
+            class="card border-warning"
+        {% elseif quizQuestion.result == 2 %}
+            class="card border-success"
+        {% endif %}
+
+>
+
+    <div {% if quizQuestion.result == 0 %}
+            class="card-header bg-danger"
+        {% elseif quizQuestion.result == 1 %}
+            class="card-header bg-warning"
+        {% elseif quizQuestion.result == 2 %}
+            class="card-header bg-success"
+            {% endif %}>
+
+    </div>
+
+    <div class="card-body">
+
+        <h5 class="card-title">
+            {{ quizQuestion.question.label }}
+        </h5>
+
+        <p class="card-text">
+            {{ quizQuestion.question.explanation }}
+        </p>
+
+        {#<div
+                {% if quizQuestion.question.getlevel == 0 %}
+                    class="text-info"
+                {% elseif quizQuestion.question.getlevel == 1 %}
+                    class="text-warning"
+                {% elseif quizQuestion.question.getlevel == 2 %}
+                    class="text-danger"
+                {% endif %}
+        >
+            {{ quizQuestion.question.levelDifficulty }}
+        </div>#}
+
+        <div class="ml-3">
+        {% for answer in quizQuestion.question.answers %}
+            <p class="card-text">
+                <i class="fas fa-times"></i>
+                {{ answer.label }}
+            </p>
+        {% endfor %}
+        </div>
+
+        {#<p class="card-text">
+            {% for theme in quizQuestion.question.themes %}
+                <span class="badge badge-pill badge-secondary">{{ theme.name }}</span>
+            {% endfor %}
+        </p>#}
+    </div>
+
+</div>

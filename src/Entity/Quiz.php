@@ -40,6 +40,11 @@ class Quiz
     private $user;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $number;
+
+    /**
      * @ORM\OneToMany(
      *     targetEntity=QuizQuestion::class,
      *     mappedBy="quiz",
@@ -137,5 +142,21 @@ class Quiz
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * @param mixed $number
+     */
+    public function setNumber($number): void
+    {
+        $this->number = $number;
     }
 }

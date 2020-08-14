@@ -88,7 +88,6 @@ class Question
         // Initializing variables
         $this->level = 0;
         $this->is_available = false;
-        $this->is_multiple = false;
         $this->answers = new ArrayCollection();
         $this->quizQuestions = new ArrayCollection();
         $this->themes = new ArrayCollection();

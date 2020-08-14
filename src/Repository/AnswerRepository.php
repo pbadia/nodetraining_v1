@@ -37,17 +37,29 @@ class AnswerRepository extends ServiceEntityRepository
     //  * @return Answer[] Returns an array of Answer objects
     //  */
 
-    public function findByQuestion(int $questionId)
+    public function findByQuestion(int $questionId, bool $correctOnly = false)
     {
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->andWhere('a.question = :questionId')
             ->setParameter('questionId', $questionId)
             ->orderBy('a.id', 'ASC')
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($correctOnly)
+        {
+            $qb
+                ->andWhere('a.is_correct = true');
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
+    /**
+     * @param int $questionId
+     * @return bool
+     */
     public function getIsMultipleQuestion(int $questionId): bool
     {
 

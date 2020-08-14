@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Quiz;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,15 +22,34 @@ class QuizRepository extends ServiceEntityRepository
         parent::__construct($registry, Quiz::class);
     }
 
-    public function findRunningByUser(int $userId) : array
+    public function findByUser(int $userId, bool $runningOnly = false) : array
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.is_running = true')
+        $qb = $this->createQueryBuilder('q')
             ->andWhere('q.user = :userId')
-            ->setParameter('userId', $userId)
-            ->setMaxResults(1)
+            ->setParameter('userId', $userId);
+
+        if ($runningOnly){
+            $qb->andWhere('q.is_running = true')
+                ->setMaxResults(1);
+        }
+
+        return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    public function getMaxNumber(int $userId) : ?int
+    {
+        $qb = $this->createQueryBuilder('q')
+            ->andWhere('q.user = :userId')
+            ->setParameter('userId', $userId)
+            ->select('MAX(q.number)');
+
+        try {
+            return $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
     }
 
     // /**
