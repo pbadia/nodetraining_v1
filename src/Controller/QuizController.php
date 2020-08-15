@@ -13,6 +13,7 @@ use App\Repository\QuestionRepository;
 use App\Repository\QuizQuestionRepository;
 use App\Repository\QuizRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,7 +78,7 @@ class QuizController extends AbstractController
         $quiz = new Quiz();
         $quiz->setUser($user);
 
-        // Todo set the quiz number
+        // Set the quiz number
         $quiz->setNumber($quizRepository->getMaxNumber($user->getId()) + 1);
 
         // Todo card deck admin + index question, etc
@@ -101,15 +102,13 @@ class QuizController extends AbstractController
     }
 
     /**
-     * @Route("/quiz/{id}", name="quiz.play", methods="GET|POST")
+     * @Route("/quiz/{id}", name="quiz.play", methods="GET|POST", requirements={"id"="\d+"})
      * @param Quiz $quiz
      * @param Request $request
      * @param QuizQuestionRepository $quizQuestionRepository
      * @return RedirectResponse|Response
      */
-    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository, AnswerRepository $answerRepository
-    , LoggerInterface $logger
-         )
+    public function play(Quiz $quiz, Request $request, QuizQuestionRepository $quizQuestionRepository)
     {
         // Check if the current user can access this quiz
         $this->denyAccessUnlessGranted('QUIZ_VIEW', $quiz);
@@ -137,56 +136,12 @@ class QuizController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /*// Get the correct answers for the current question
-            $correctAnswers = $answerRepository->findByQuestion($quizQuestion->getQuestion()->getId(), true);
-            $givenAnswers = $quizQuestion->getAnswers();
-            $correctAnswersNumber = 0;
-            $wrongAnswersNumber = 0;
+            // Update the score of the quiz
+            $quiz->addScore($quizQuestion->getAnswer()->getAccuracy());
 
-            // Calculate the result
-            foreach ($givenAnswers as $answer)
-            {
-                if (in_array($answer, $correctAnswers)){
-                    $correctAnswersNumber++;
-                }
-                else $wrongAnswersNumber++;
-            }
-
-            // There is at least one correct answer
-            if ($correctAnswersNumber != 0){
-                // There are only correct answers
-                if ($correctAnswersNumber == count($correctAnswers) && $wrongAnswersNumber == 0){
-                    // Correct
-                    $quizQuestion->setResult(2);
-                } else {
-                    // Partially correct
-                    $quizQuestion->setResult(1);
-                }
-            } else {
-                // Wrong answers only
-                $quizQuestion->setResult(0);
-            }*/
-            /*
-            // Get the given answer for the current question
-            $givenAnswer = $quizQuestion->getAnswer();
-
-            // The given answer is
-            switch ($givenAnswer->getAccuracy()) {
-                case Answer::ACCURACY_LEVEL[0]:
-                    // False
-                    break;
-                case Answer::ACCURACY_LEVEL[1]:
-                    // Partially correct
-                    break;
-                case Answer::ACCURACY_LEVEL[2]:
-                    // Correct
-                    break;
-
-            }*/
-
-
-
+            // Persist the entities
             $this->em->persist($quizQuestion);
+            $this->em->persist($quiz);
             $this->em->flush();
 
             // Redirect to the next question
@@ -214,27 +169,22 @@ class QuizController extends AbstractController
         // Get the quizQuestion objects to get the results
         $quizQuestions = $quiz->getQuizQuestions();
 
-        // Calculate the score
-        $score = 0;
-        foreach ($quizQuestions as $quizQuestion){
-            $score += $quizQuestion->getAnswer()->getAccuracy();
-        }
-
         // Display the quiz result
         return $this->render('quiz/result.html.twig', [
-            'quizNumber' => $quiz->getNumber(),
-            'quizQuestions' => $quizQuestions,
-            'score' => $score
+            'quiz' => $quiz,
+            'quizQuestions' => $quizQuestions
         ]);
     }
 
     /**
      * @Route("/quiz/results", name="quiz.results")
+     * @param PaginatorInterface $paginator
      * @param QuizRepository $repository
+     * @param Request $request
+     * @return Response
      */
-    public function results(QuizRepository $repository)
+    public function results(PaginatorInterface $paginator, QuizRepository $repository, Request $request)
     {
-        // Todo use voter
         // Check if a user is actually connected
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -242,9 +192,18 @@ class QuizController extends AbstractController
         $user = $this->getUser();
 
         // Get the quizzes the user has played
-        $quizzes = $repository->findByUser($user->getId());
+        //$quizzes = $repository->findByUser($user->getId());
 
         // Get the quizQuestion objects to get the results
+
+        // Get the quizzes the user has played
+        $quizzes = $paginator->paginate($this->repository->findByUser($user->getId()),
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/);
+
+        return $this->render('/quiz/results.html.twig', [
+            'quizzes' => $quizzes,
+        ]);
 
     }
 }

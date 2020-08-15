@@ -20,6 +20,16 @@ class Quiz
     private $id;
 
     /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $score;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $is_running;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -29,10 +39,6 @@ class Quiz
      */
     private $updated_at;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
-    private $is_running;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="quizzes")
@@ -55,9 +61,10 @@ class Quiz
 
     public function __construct()
     {
+        $this->score = 0;
+        $this->is_running = true;
         $this->created_at = new \DateTime();
         $this->quizQuestions = new ArrayCollection();
-        $this->is_running = true;
     }
 
     public function getId(): ?int
@@ -158,5 +165,55 @@ class Quiz
     public function setNumber($number): void
     {
         $this->number = $number;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param mixed $score
+     */
+    public function setScore($score): void
+    {
+        $this->score = $score;
+    }
+
+    /**
+     * Add some points to the score
+     *
+     * @param $points
+     */
+    public function addScore($points): void
+    {
+        $this->score += $points;
+    }
+
+    /**
+     * Get all the themes corresponding to the quiz without repetition
+     *
+     * @return string
+     */
+    public function getThemes() : string
+    {
+        $themes = array();
+
+        // For each quizQuestion item, get the corresponding themes if not already listed
+        foreach ($this->quizQuestions as $quizQuestion){
+            foreach ($quizQuestion->getQuestion()->getThemes() as $theme) {
+                $themeName = $theme->getName();
+                if (!in_array($themeName, $themes)) {
+                    $themes[] = $themeName;
+                }
+            }
+        }
+
+        // Return the themes as a string
+        return implode($themes, ", ");
+
     }
 }

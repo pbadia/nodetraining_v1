@@ -3,7 +3,7 @@
 {% block body_header %}
     <div class="jumbotron">
         <div class="container">
-            <h3>Filtrer les résultats :</h3>{#
+            <h3>Mes résultats :</h3>{#
             {{ form_start(form) }}
             <div class="row align-items-end">
                 <div class="col-auto">
@@ -29,18 +29,41 @@
 {% block body %}
 
     <div class="container mt-4">
-        <h2>Mes résultats</h2>
-        <div class="row flex">
-            {% for question in questions %}
-                <div class="col-3 mt-4">
-                    {% include 'question/_question.html.twig' %}
-                </div>
+        <h2>Mes quizz</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Thèmes associés <i class="fas fa-tag"></i></td>
+                    <td>Score <i class="fas fa-trophy"></i></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for quiz in quizzes %}
+                <tr>
+                    <td>{{ quiz.number }}</td>
+                    <td>{{ quiz.themes }}</td>
+                    <td>
+                    <h6
+                                {% if quiz.score == 10 %}
+                            class="gold-medal"
+                        {% elseif quiz.score >= 8 %}
+                            class="silver-medal"
+                        {% elseif quiz.score >= 6 %}
+                            class="bronze-medal"
+                                {% endif %}>{{ quiz.score }}</h6></td>
+                    <td>
+                         <a href="{{ path ('quiz.result', {id: quiz.id}) }}" class="btn btn-primary">Voir le quizz</a>
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
+            </tbody>
+        </table>
 
         {# display navigation #}
         <div class="navigation mt-4 d-flex justify-content-center">
-            {{ knp_pagination_render(questions) }}
+            {{ knp_pagination_render(quizzes) }}
         </div>
 
     </div>
