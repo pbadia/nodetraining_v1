@@ -3,7 +3,15 @@
 {% block body_header %}
     <div class="jumbotron">
         <div class="container">
-            <h3>Résultats du quizz #{{ quizNumber }} </h3>{#
+            <div class="row">
+                <div class="col-9">
+                    <h3>Résultats du quizz #{{ quizNumber }} </h3>
+                </div>
+                <div class="col-3 text-right">
+                    <h1><i class="fas fa-trophy"></i> {{ score }}/10 </h1>
+                </div>
+            </div>
+            {#
             {{ form_start(form) }}
             <div class="row align-items-end">
                 <div class="col-auto">

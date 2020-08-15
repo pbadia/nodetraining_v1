@@ -1,0 +1,10 @@
+.icon-column {
+    -ms-flex: 0 0 14px;
+    flex: 0 0 14px;
+}
+
+@media (max-width: 690px) {
+    .icon-column {
+        display: none;
+    }
+}

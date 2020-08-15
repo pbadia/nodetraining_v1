@@ -24,18 +24,21 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home') }}"><i class="fas fa-home"></i> Accueil</a>
+                </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
-                        <a class="nav-link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}" href="{{ path('admin.index') }}">Administration</a>
+                        <a class="nav-link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}" href="{{ path('admin.index') }}"><i class="fas fa-cog"></i> Administration</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
                     {% if app.request.get('_route') == 'home' %}
                         {% if app.user %}
                             {% if quiz %}
-                                <a class="nav-link" href="{{ path('quiz.play', {'id': quiz.id}) }}">Reprendre le quizz</a>
+                                <a class="nav-link" href="{{ path('quiz.play', {'id': quiz.id}) }}"><i class="fas fa-play-circle"></i> Reprendre le quizz</a>
                             {% else %}
-                                <a class="nav-link" href="{{ path('quiz.new') }}">Nouveau quizz</a>
+                                <a class="nav-link" href="{{ path('quiz.new') }}"><i class="fas fa-play-circle"></i> Nouveau quizz</a>
                             {%  endif %}
                         {% else %}
                             <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>

@@ -12,12 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class QuizQuestion
 {
-    const QUESTION_RESULT = [
-        0 => 'Faux',
-        1 => 'Partiellement correct',
-        2 => 'Correct'
-    ];
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -36,19 +30,15 @@ class QuizQuestion
     private $question;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Answer::class, inversedBy="quizQuestions")
+     * @ORM\ManyToOne(targetEntity=Answer::class, inversedBy="quizQuestions")
      */
-    private $answers;
+    private $answer;
 
-    /**
-     * @ORM\Column(type="integer", options={"default": 0})
-     */
-    private $result;
 
     public function __construct()
     {
-        $this->result = self::QUESTION_RESULT[0];
-        $this->answers = new ArrayCollection();
+        //$this->result = self::QUESTION_RESULT[0];
+        //$this->answers = new ArrayCollection();
     }
 
     public function getQuiz(): ?Quiz
@@ -75,28 +65,14 @@ class QuizQuestion
         return $this;
     }
 
-    /**
-     * @return Collection|Answer[]
-     */
-    public function getAnswers(): Collection
+    public function getAnswer(): ?Answer
     {
-        return $this->answers;
+        return $this->answer;
     }
 
-    public function addAnswer(Answer $answer): self
+    public function setAnswer(?Answer $answer): self
     {
-        if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
-        }
-
-        return $this;
-    }
-
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->answers->contains($answer)) {
-            $this->answers->removeElement($answer);
-        }
+        $this->answer = $answer;
 
         return $this;
     }
@@ -106,19 +82,4 @@ class QuizQuestion
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getResult(): ?int
-    {
-        return $this->result;
-    }
-
-    /**
-     * @param mixed $result
-     */
-    public function setResult($result): void
-    {
-        $this->result = $result;
-    }
 }

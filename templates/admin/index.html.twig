@@ -4,11 +4,40 @@
 
 {% block body %}
 
-    <div class="row m-4">
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-question"></i> Questions</h5>
+                <p class="card-text">Accéder à l'administration des questions et de leurs
+                    réponses.</p>
+                <a href="{{ path('admin.question.index') }}" class="btn btn-primary">Administration des questions</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-tag"></i> Thèmes</h5>
+                <p class="card-text">Accéder à l'administration des thèmes.</p>
+                <a href="{{ path('admin.theme.index') }}" class="btn btn-primary">Administration des thèmes</a>
+            </div>
+        </div>
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Questions</h5>
+                    <h5 class="card-title"><i class="fas fa-user"></i> Utilisateurs</h5>
+                    <p class="card-text">Accéder à l'administration des utilisateurs ainsi que des
+                        droits qui leurs sont attribués.</p>
+                    <a href="{{ path('admin.user.index') }}" class="btn btn-primary">Administration des utilisateurs</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {#<div class="row m-4">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-question"></i> Questions</h5>
                     <p class="card-text">Accéder à l'administration des questions et de leurs
                     réponses.</p>
                     <a href="{{ path('admin.question.index') }}" class="btn btn-primary">Administration des questions</a>
@@ -18,7 +47,7 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Thèmes</h5>
+                    <h5 class="card-title"><i class="fas fa-tag"></i> Thèmes</h5>
                     <p class="card-text">Accéder à l'administration des thèmes.</p>
                     <a href="{{ path('admin.theme.index') }}" class="btn btn-primary">Administration des thèmes</a>
                 </div>
@@ -27,14 +56,14 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Utilisateurs</h5>
+                    <h5 class="card-title"><i class="fas fa-user"></i> Utilisateurs</h5>
                     <p class="card-text">Accéder à l'administration des utilisateurs ainsi que des
                         droits qui leurs sont attribués.</p>
                     <a href="{{ path('admin.user.index') }}" class="btn btn-primary">Administration des utilisateurs</a>
                 </div>
             </div>
         </div>
-    </div>
+    </div>#}
 
 
 {% endblock %}

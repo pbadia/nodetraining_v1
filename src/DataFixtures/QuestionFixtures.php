@@ -74,8 +74,8 @@ class QuestionFixtures extends Fixture
                 $answer = new Answer();
                 $answer->setLabel($faker->sentence());
                 $answer->setQuestion($question);
-                $r = rand(0,1);
-                if ($r == 1) $answer->setIsCorrect(true);
+                $r = rand(0,2);
+                $answer->setAccuracy($r);
                 $manager->persist($answer);
 
             }

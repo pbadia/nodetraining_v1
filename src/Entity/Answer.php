@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Answer
 {
+    const ACCURACY_LEVEL = [
+        0 => 'Incorrect',
+        1 => 'Partiellement correct',
+        2 => 'Correct'
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,9 +31,9 @@ class Answer
     private $label;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $is_correct;
+    private $accuracy;
 
     /**
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="answers")
@@ -36,14 +42,14 @@ class Answer
     private $question;
 
     /**
-     * @ORM\ManyToMany(targetEntity=QuizQuestion::class, mappedBy="answers")
+     * @ORM\OneToMany(targetEntity=QuizQuestion::class, mappedBy="answers")
      */
     private $quizQuestions;
 
     public function __construct()
     {
         $this->quizQuestions = new ArrayCollection();
-        $this->setIsCorrect(false);
+        $this->accuracy = 0;
     }
 
     public function __toString()
@@ -68,14 +74,14 @@ class Answer
         return $this;
     }
 
-    public function getIsCorrect(): ?bool
+    public function getAccuracy(): ?int
     {
-        return $this->is_correct;
+        return $this->accuracy;
     }
 
-    public function setIsCorrect(bool $is_correct): self
+    public function setAccuracy(int $accuracy): self
     {
-        $this->is_correct = $is_correct;
+        $this->accuracy = $accuracy;
 
         return $this;
     }
@@ -122,6 +128,11 @@ class Answer
 
         return $this;
     }
+
+    public static function getAccuracyChoices()
+{
+    return array_flip(self::ACCURACY_LEVEL);
+}
 
 
 }

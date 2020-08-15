@@ -29,7 +29,7 @@ class QuizQuestionRepository extends ServiceEntityRepository
         $qb
             ->andWhere('q.quiz = :val')
             ->setParameter('val', $quizId)
-            ->andWhere('q.answers is empty')
+            ->andWhere('q.answer is null')
             //->having('count(q.answers) = 0')
             //->andWhere('q.answer IS NULL')
             ->orderBy('q.question', 'ASC')

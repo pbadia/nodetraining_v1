@@ -38,11 +38,11 @@ class QuizQuestionType extends AbstractType
                 $quizQuestion = $event->getData();
                 $form = $event->getForm();
 
-                $form->add('answers', EntityType::class, [
+                $form->add('answer', EntityType::class, [
                     'class' => Answer::class,
                     'choices' => $this->fillAnswers($quizQuestion),
                     'expanded' => true,
-                    'multiple' => true,
+                    'multiple' => false,
                 ]);
 
                 /*if ($this->answerRepository->getIsMultipleQuestion($quizQuestion->getQuestion()->getId())){

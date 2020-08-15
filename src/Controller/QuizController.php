@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Answer;
 use App\Entity\Quiz;
 use App\Entity\QuizQuestion;
 use App\Form\QuizQuestionType;
@@ -136,7 +137,7 @@ class QuizController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Get the correct answers for the current question
+            /*// Get the correct answers for the current question
             $correctAnswers = $answerRepository->findByQuestion($quizQuestion->getQuestion()->getId(), true);
             $givenAnswers = $quizQuestion->getAnswers();
             $correctAnswersNumber = 0;
@@ -151,10 +152,6 @@ class QuizController extends AbstractController
                 else $wrongAnswersNumber++;
             }
 
-            $logger->critical('correct / given answers : ' . count($correctAnswers) . ' / ' . count($givenAnswers));
-            $logger->critical('number of correct answers : ' . $correctAnswersNumber);
-            $logger->critical('number of wrong answers :' . $wrongAnswersNumber);
-
             // There is at least one correct answer
             if ($correctAnswersNumber != 0){
                 // There are only correct answers
@@ -168,7 +165,26 @@ class QuizController extends AbstractController
             } else {
                 // Wrong answers only
                 $quizQuestion->setResult(0);
-            }
+            }*/
+            /*
+            // Get the given answer for the current question
+            $givenAnswer = $quizQuestion->getAnswer();
+
+            // The given answer is
+            switch ($givenAnswer->getAccuracy()) {
+                case Answer::ACCURACY_LEVEL[0]:
+                    // False
+                    break;
+                case Answer::ACCURACY_LEVEL[1]:
+                    // Partially correct
+                    break;
+                case Answer::ACCURACY_LEVEL[2]:
+                    // Correct
+                    break;
+
+            }*/
+
+
 
             $this->em->persist($quizQuestion);
             $this->em->flush();
@@ -198,10 +214,17 @@ class QuizController extends AbstractController
         // Get the quizQuestion objects to get the results
         $quizQuestions = $quiz->getQuizQuestions();
 
+        // Calculate the score
+        $score = 0;
+        foreach ($quizQuestions as $quizQuestion){
+            $score += $quizQuestion->getAnswer()->getAccuracy();
+        }
+
         // Display the quiz result
         return $this->render('quiz/result.html.twig', [
             'quizNumber' => $quiz->getNumber(),
-            'quizQuestions' => $quizQuestions
+            'quizQuestions' => $quizQuestions,
+            'score' => $score
         ]);
     }
 

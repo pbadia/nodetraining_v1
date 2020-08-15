@@ -1,19 +1,23 @@
+{%  block stylesheets %}
+    {{ encore_entry_link_tags('quiz') }}
+{% endblock %}
+
 <div
-        {% if quizQuestion.result == 0 %}
+        {% if quizQuestion.answer.accuracy == 0 %}
             class="card border-danger"
-        {% elseif quizQuestion.result == 1 %}
+        {% elseif quizQuestion.answer.accuracy == 1 %}
             class="card border-warning"
-        {% elseif quizQuestion.result == 2 %}
+        {% elseif quizQuestion.answer.accuracy == 2 %}
             class="card border-success"
         {% endif %}
 
 >
 
-    <div {% if quizQuestion.result == 0 %}
+    <div {% if quizQuestion.answer.accuracy == 0 %}
             class="card-header bg-danger"
-        {% elseif quizQuestion.result == 1 %}
+        {% elseif quizQuestion.answer.accuracy == 1 %}
             class="card-header bg-warning"
-        {% elseif quizQuestion.result == 2 %}
+        {% elseif quizQuestion.answer.accuracy == 2 %}
             class="card-header bg-success"
             {% endif %}>
 
@@ -24,10 +28,6 @@
         <h5 class="card-title">
             {{ quizQuestion.question.label }}
         </h5>
-
-        <p class="card-text">
-            {{ quizQuestion.question.explanation }}
-        </p>
 
         {#<div
                 {% if quizQuestion.question.getlevel == 0 %}
@@ -41,20 +41,42 @@
             {{ quizQuestion.question.levelDifficulty }}
         </div>#}
 
-        <div class="ml-3">
+        <p class="card-text">
+            {{ quizQuestion.question.explanation }}
+        </p>
+
+
         {% for answer in quizQuestion.question.answers %}
-            <p class="card-text">
-                <i class="fas fa-times"></i>
+        <div class="row ml-3">
+            <div class="icon-column">
+                {% if answer == quizQuestion.answer %}
+                    {% if answer.accuracy == 0 %}
+                        <i class="fas fa-times"></i>
+                    {% elseif answer.accuracy == 1 %}
+                        <i class="fas fa-minus"></i>
+                    {% elseif answer.accuracy == 2 %}
+                        <i class="fas fa-check"></i>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-auto">
                 {{ answer.label }}
-            </p>
-        {% endfor %}
+            </div>
+
         </div>
+        {% endfor %}
 
         {#<p class="card-text">
             {% for theme in quizQuestion.question.themes %}
                 <span class="badge badge-pill badge-secondary">{{ theme.name }}</span>
             {% endfor %}
         </p>#}
+    </div>
+
+    <div class="card-footer">
+        {% for theme in quizQuestion.question.themes %}
+                <span class="badge badge-pill badge-secondary">{{ theme.name }}</span>
+            {% endfor %}
     </div>
 
 </div>

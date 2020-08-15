@@ -1,11 +1,11 @@
 {% import _self as formMacros %}
 
 {% macro printAnswerRow(answerForm) %}
-        <div class="col-md-8">
+        <div class="col-md-7">
             {{ form_widget(answerForm.label) }}
         </div>
-        <div class="col-md-2">
-            {{ form_widget(answerForm.is_correct) }}
+        <div class="col-md-3">
+            {{ form_widget(answerForm.accuracy) }}
         </div>
 {% endmacro %}
 
