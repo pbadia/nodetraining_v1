@@ -13,22 +13,22 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <a class="navbar-brand mb-0 h1" href="{{ path('home') }}">
+        {#<a class="navbar-brand mb-0 h1" href="{{ path('home') }}">
             <img src="{{ asset('node_logo_small.png') }}" width="26" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             Training
-        </a>
+        </a>#}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}" href="{{ path('home') }}"><i class="fas fa-home"></i> Accueil</a>
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('home') }}"><i class="fas fa-home"></i> Accueil</a>
                 </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}" href="{{ path('admin.index') }}"><i class="fas fa-cog"></i> Administration</a>
+                    <li class="nav-item {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('admin.index') }}"><i class="fas fa-cog"></i> Administration</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -44,23 +44,26 @@
                         {%  endif %}
                     {% endif %}
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if 'quiz/result' in app.request.uri %}active{% endif %}">
                         {% if app.user %}
-                            <a class="nav-link {% if 'quiz/result' in app.request.uri %}active{% endif %}" href="{{ path('quiz.results') }}"><i class="fas fa-trophy"></i> Résultats</a>
+                            <a class="nav-link" href="{{ path('quiz.results') }}"><i class="fas fa-trophy"></i> Résultats</a>
                         {%  endif %}
                 </li>
 
             </ul>
             {% if app.user %}
-                <a class="btn btn-primary" id="btn-login" href="{{ path('app_logout') }}">Se déconnecter ({{ app.user.username }})</a>
+                <a class="btn btn-node" id="btn-login" href="{{ path('app_logout') }}">Se déconnecter ({{ app.user.username }})</a>
             {% else %}
                 <a class="btn mr-3" href="{{ path('app_register') }}">S&#39;inscrire</a>
-                <a class="btn btn-primary" id="btn-login" href="{{ path('app_login') }}">Se connecter</a>
+                <a class="btn btn-node" id="btn-login" href="{{ path('app_login') }}">Se connecter</a>
             {% endif %}
         </div>
     </nav>
 
     {% block body_header %}
+    {% endblock %}
+
+    {% block body_home %}
     {% endblock %}
 
     <div class="container mt-4">

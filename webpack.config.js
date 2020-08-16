@@ -33,8 +33,8 @@ Encore
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
-    //.enableSingleRuntimeChunk()
-    .disableSingleRuntimeChunk()
+    .enableSingleRuntimeChunk()
+    //.disableSingleRuntimeChunk()
 
     /*
      * FEATURE CONFIG
@@ -71,6 +71,7 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+
 ;
 
 module.exports = Encore.getWebpackConfig();

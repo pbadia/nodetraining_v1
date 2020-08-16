@@ -7,6 +7,20 @@
 
 // any CSS you import will output into a single css file (app.scss in this case)
 import '../css/app.scss';
+import '../css/_medals.scss';
+import '../css/_buttons.scss';
+import '../css/_navbar.scss';
+
+// Core variables and mixins
+import "../css/_variables.scss";
+import "../css/_mixins.scss";
+// Components
+import "../css/_masthead.scss";
+import "../css/_showcase.scss";
+import "../css/_icons.scss";
+import "../css/_testimonials.scss";
+import "../css/_call-to-action.scss";
+import "../css/_footer.scss";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';

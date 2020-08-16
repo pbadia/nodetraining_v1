@@ -1,0 +1,27 @@
+@import "~bootstrap";
+@import "variables";
+
+@mixin bootstrap-button($background) {
+  $color: #fff;
+  @if lightness($background) >= lightness(#aaa) {
+    $color: #333;
+  }
+  @include button-variant($color, $background,
+          darken($background, .2 * lightness($background)) // border
+  );
+
+}
+
+/*button-variant($background, $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: darken($background, 10%), $active-border: darken($border, 12.5%))*/
+.btn-node {
+  @include button-variant(#455a64, #455a64, #718792, #718792, #718792, #718792);
+  color: #fff;
+}
+
+a.btn-node:hover {
+  color: #fff;
+}
+
+button.btn-node:hover {
+  color: #fff;
+}
