@@ -192,7 +192,7 @@ class QuizController extends AbstractController
         $user = $this->getUser();
 
         // Get the medals for the user
-        // TODO
+        // TODO create function(s) in repository and update template
 
         // Get the quizzes the user has played
         $quizzes = $paginator->paginate($this->repository->findByUser($user->getId()),
@@ -201,6 +201,7 @@ class QuizController extends AbstractController
 
         return $this->render('/quiz/results.html.twig', [
             'quizzes' => $quizzes,
+            'trophies' => $repository->getTrophies($user->getId()),
         ]);
 
     }

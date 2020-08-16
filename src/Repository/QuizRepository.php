@@ -41,15 +41,65 @@ class QuizRepository extends ServiceEntityRepository
     public function getMaxNumber(int $userId) : ?int
     {
         $qb = $this->createQueryBuilder('q')
+            ->select('MAX(q.number)')
             ->andWhere('q.user = :userId')
-            ->setParameter('userId', $userId)
-            ->select('MAX(q.number)');
+            ->setParameter('userId', $userId);
 
         try {
             return $qb->getQuery()->getSingleScalarResult();
         } catch (NoResultException $e) {
         } catch (NonUniqueResultException $e) {
         }
+    }
+
+    /**
+     * Return an array with the number of gold, silver and bronze trophies
+     *
+     * @param int $userId
+     * @return array
+     *
+     */
+    public function getTrophies(int $userId)
+    {
+        $trophies = array();
+
+        $qb = $this->createQueryBuilder('q')
+            ->select('COUNT(q.id)')
+            ->andWhere('q.user = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('q.score = 10');
+
+        try {
+            $trophies['gold'] = $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
+
+        $qb = $this->createQueryBuilder('q')
+            ->select('COUNT(q.id)')
+            ->andWhere('q.user = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('q.score IN (8,9)');
+
+        try {
+            $trophies['silver'] = $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
+
+        $qb = $this->createQueryBuilder('q')
+            ->select('COUNT(q.id)')
+            ->andWhere('q.user = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('q.score IN (6,7)');
+
+        try {
+            $trophies['bronze'] = $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
+
+        return $trophies;
     }
 
     // /**
