@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('home') }}
-{% endblock %}
+{#{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}#}
 
 {% block body_home %}
 
@@ -18,8 +18,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-10 mx-auto">
-                    <h1 class="mb-3">Formez vos employés à la sécurité informatique avant qu'il ne soit trop tard</h1>
-                    <h3>Face au nouveau visage de la cybersécurité, la contre-mesure la plus efficace est la sensibilisation des employés</h3>
+                    <h1 class="mb-3">Formez vous à la sécurité informatique</h1>
+                    <h2>Face au nouveau visage de la cybersécurité, </h2>
+                    <h2>la sensibilisation est devenue la protection la plus efficace</h2>
+                    <a href="{{ app.request.uri }}#features"><span></span>Caractéristiques</a>
                     {#<a class="btn btn-primary" href="{{ path('app_register') }}">S&#39;inscrire</a>#}
                 </div>
             </div>
@@ -27,16 +29,16 @@
     </header>
 
     <!-- Icons Grid -->
-    <section class="features-icons bg-light text-center">
-        <div class="container">
+    <section class="features-icons bg-light text-center" id="features">
+        <div class="container" >
             <div class="row">
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon">
                             <i class="far fa-clock"></i>
                         </div>
-                        <h3>2 minutes suffisent</h3>
-                        <p class="lead mb-0">Participer à un quizz deux fois par mois permet d'être confronté aux menaces et de développer les bons réflexes</p>
+                        <h3>2 minutes</h3>
+                        <p class="lead mb-0">C'est le temps nécessaire pour être confronté aux dernières menaces et de développer les bons réflexes en cas d'incident</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -54,7 +56,7 @@
                             <i class="fas fa-cogs"></i>
                         </div>
                         <h3>Questionnaires personnalisés</h3>
-                        <p class="lead mb-0">Les thèmes abordés sont choisis en fonction des résultats précédemment obtenus par l'utilisateur</p>
+                        <p class="lead mb-0">Les thèmes abordés sont choisis en fonction de vos résultats précédemments obtenus</p>
                     </div>
                 </div>
             </div>
@@ -65,25 +67,24 @@
     <section class="showcase">
         <div class="container-fluid p-0">
             <div class="row no-gutters">
-
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ asset('images/bg-showcase-1.jpg') }}');"></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ asset('images/bg-responsive-design.jpg') }}');"></div>
                 <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                    <h2>Fully Responsive Design</h2>
-                    <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+                    <h2>Compatible avec tous les appareils</h2>
+                    <p class="lead mb-0">Le site s'adapte à l'appareil que vous utilisez : smartphone, tabelette ou ordinateur. Vous pouvez vous entrainer quand vous le souhaitez avec le support à votre disposition.</p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 text-white showcase-img" style="background-image: url('img/bg-showcase-2.jpg');"></div>
+                <div class="col-lg-6 text-white showcase-img" style="background-image: url('{{ asset('images/bg-watch.jpg') }}');"></div>
                 <div class="col-lg-6 my-auto showcase-text">
-                    <h2>Updated For Bootstrap 4</h2>
-                    <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 4!</p>
+                    <h2>2 minutes 2 fois par mois</h2>
+                    <p class="lead mb-0">Seulement deux minutes sont nécessaires pour répondre à un questionnaire de cinq questions. A un rythme d'une participation toutes les deux semaines, vous pouvez être sensibilisé à l'ensemble des menaces et vous approprier les bons réflexes en cas d'incident.</p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('img/bg-showcase-3.jpg');"></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ asset('images/bg-difficulty.jpg') }}');"></div>
                 <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                    <h2>Easy to Use &amp; Customize</h2>
-                    <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+                    <h2>Expérience personnalisée</h2>
+                    <p class="lead mb-0">Plusieurs niveaux de difficulté sont disponibles afin de répondre à tous les profils (de novice à expert). Les questionnaires sont personnalisés en fonction de vos résultats précédents, afin de traiter en priorité les domaines les moins maîtrisés. </p>
                 </div>
             </div>
         </div>

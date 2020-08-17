@@ -1,4 +1,16 @@
 var Encore = require('@symfony/webpack-encore');
+const CopyPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: './assets/images/*', to: './images/*' }
+            ],
+        }),
+    ],
+};
+
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -24,7 +36,7 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('home', './assets/js/home.js')
+    //.addEntry('home', './assets/js/home.js')
     .addEntry('admin_question', './assets/js/admin/question.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -72,7 +84,6 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
-
 ;
 
 module.exports = Encore.getWebpackConfig();
