@@ -2,6 +2,34 @@
 
 {% block title 'Gérer les questions' %}
 
+{% block body_header %}
+    <div class="jumbotron">
+        <div class="container">
+            <h3>Filtrer :</h3>
+            {{ form_start(form) }}
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    {{ form_label(form.levelMin) }}
+                </div>
+                <div class="col-2">
+                    {{ form_widget(form.levelMin) }}
+                </div>
+                <div class="col-auto">
+                    {{ form_label(form.keyword) }}
+                </div>
+                <div class="col-4">
+                    {{ form_widget(form.keyword) }}
+                </div>
+                <div class="col align-self-end">
+                    <button class="btn btn-node-accent">Rechercher</button>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block body %}
 
     <div class="container mt-4">
@@ -13,6 +41,7 @@
         {% endfor %}
 
         <h1>Gérer les questions</h1>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -39,13 +68,16 @@
         </table>
 
         <div class="text-right">
-            <a href="{{ path('admin.question.new') }}" class="btn btn-node">Ajouter</a>
+            <a href="{{ path('admin.question.new') }}" class="btn btn-node-accent">Ajouter</a>
         </div>
 
         {# display navigation #}
         <div class="navigation mt-4 d-flex justify-content-center">
             {{ knp_pagination_render(questions) }}
         </div>
+
+
+
     </div>
 
 {% endblock %}

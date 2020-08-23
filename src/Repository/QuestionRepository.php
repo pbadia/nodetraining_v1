@@ -34,9 +34,15 @@ class QuestionRepository extends ServiceEntityRepository
         if ($search->getLevelMin())
         {
             $queryBuilder = $queryBuilder
-                ->where('q.level >= :levelMin')
+                ->andWhere('q.level >= :levelMin')
                 ->setParameter('levelMin', $search->getLevelMin());
+        }
 
+        if ($search->getKeyword())
+        {
+            $queryBuilder = $queryBuilder
+                ->andWhere('q.label like :keyword')
+                ->setParameter('keyword', '%'.$search->getKeyword().'%');
         }
 
         return $queryBuilder->getQuery();

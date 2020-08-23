@@ -11,6 +11,8 @@ class QuestionSearch
      */
     private $levelMin;
 
+    private $keyword;
+
     /**
      * @param int|null $levelMin
      * @return QuestionSearch
@@ -28,4 +30,22 @@ class QuestionSearch
     {
         return $this->levelMin;
     }
+
+    /**
+     * @param mixed $keyword
+     */
+    public function setKeyword(string $keyword): void
+    {
+        $this->keyword = $keyword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function
+    getKeyword() : ?string
+    {
+        return $this->keyword;
+    }
+
 }

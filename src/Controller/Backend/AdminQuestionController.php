@@ -6,6 +6,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Question;
 use App\Entity\QuestionSearch;
+use App\Form\QuestionSearchType;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,12 +49,18 @@ class AdminQuestionController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        $questions = $paginator->paginate($this->repository->findAllQuery(new QuestionSearch()),
+        // Filter form to display matching questions
+        $search = new QuestionSearch();
+        $form = $this->createForm(QuestionSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $questions = $paginator->paginate($this->repository->findAllQuery($search),
             $request->query->getInt('page', 1), /*page number*/
             12 /*limit per page*/);
 
         return $this->render('admin/question/index.html.twig', [
             'questions' => $questions,
+            'form'      => $form->createView(),
         ]);
     }
 

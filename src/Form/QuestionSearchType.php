@@ -7,6 +7,7 @@ use App\Entity\QuestionSearch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +23,10 @@ class QuestionSearchType extends AbstractType
                 'attr'      => [
                     'placeholder' => 'Niveau minimum'
                 ]
+            ])
+            ->add('keyword', TextType::class, [
+                'required' => false,
+                'label'    => 'Mot clé',
             ])
         ;
     }
