@@ -191,9 +191,6 @@ class QuizController extends AbstractController
         // Get the current logged on user
         $user = $this->getUser();
 
-        // Get the medals for the user
-        // TODO create function(s) in repository and update template
-
         // Get the quizzes the user has played
         $quizzes = $paginator->paginate($this->repository->findByUser($user->getId()),
             $request->query->getInt('page', 1), /*page number*/

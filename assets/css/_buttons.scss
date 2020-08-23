@@ -25,3 +25,17 @@ a.btn-node:hover {
 button.btn-node:hover {
   color: #fff;
 }
+
+/*button-variant($background, $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: darken($background, 10%), $active-border: darken($border, 12.5%))*/
+.btn-node-accent {
+  @include button-variant(#009688, #009688, darken(#009688, .2 * lightness(#009688)));
+  color: #fff;
+}
+
+a.btn-node-accent:hover {
+  color: #fff;
+}
+
+button.btn-node-accent:hover {
+  color: #fff;
+}

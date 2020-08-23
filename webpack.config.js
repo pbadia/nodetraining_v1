@@ -1,15 +1,15 @@
 var Encore = require('@symfony/webpack-encore');
-const CopyPlugin = require('copy-webpack-plugin');
+/*const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: './assets/images/*', to: './images/*' }
+                { from: './assets/images/!*', to: './images/!*' }
             ],
         }),
     ],
-};
+};*/
 
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.

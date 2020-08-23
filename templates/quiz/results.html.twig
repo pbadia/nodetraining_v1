@@ -55,18 +55,18 @@
             <tbody>
             {% for quiz in quizzes %}
                 <tr>
-                    <td>{{ quiz.number }}</td>
-                    <td>{{ quiz.themes }}</td>
-                    <td>
-                    <h6
-                                {% if quiz.score == 10 %}
-                            class="gold-medal"
-                        {% elseif quiz.score >= 8 %}
-                            class="silver-medal"
-                        {% elseif quiz.score >= 6 %}
-                            class="bronze-medal"
-                                {% endif %}>{{ quiz.score }}</h6></td>
-                    <td>
+                    <td class="align-middle">{{ quiz.number }}</td>
+                    <td class="align-middle">{{ quiz.themes }}</td>
+                    <td class="align-middle">
+                        <span
+                                    {% if quiz.score == 10 %}
+                                class="gold-medal"
+                            {% elseif quiz.score >= 8 %}
+                                class="silver-medal"
+                            {% elseif quiz.score >= 6 %}
+                                class="bronze-medal"
+                                    {% endif %}>{{ quiz.score }}</span></td>
+                    <td class="align-middle">
                          <a href="{{ path ('quiz.result', {id: quiz.id}) }}" class="btn btn-node">Voir le quizz</a>
                     </td>
                 </tr>
