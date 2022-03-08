@@ -32,6 +32,7 @@
         "symfony/process": "4.4.*",
         "symfony/property-access": "4.4.*",
         "symfony/property-info": "4.4.*",
+        "symfony/requirements-checker": "^2.0",
         "symfony/security-bundle": "4.4.*",
         "symfony/serializer": "4.4.*",
         "symfony/translation": "4.4.*",
@@ -86,7 +87,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "requirements-checker": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"

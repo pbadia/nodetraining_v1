@@ -185,6 +185,8 @@ class QuizController extends AbstractController
      */
     public function results(PaginatorInterface $paginator, QuizRepository $repository, Request $request)
     {
+        // TODO add filtering system for results (trophy, them, etc)
+
         // Check if a user is actually connected
         $this->denyAccessUnlessGranted('ROLE_USER');
 
