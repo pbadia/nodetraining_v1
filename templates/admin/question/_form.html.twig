@@ -43,7 +43,7 @@
             {{ form_row(form.imageFile) }}
         </div>
         <div class="col-md-4">
-            {% if question.imageName is not null  %}<img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('thumbnail') }}" alt="card-img-top" style="width: 100%; height: auto">{% endif %}
+            {% if question.imageName is not null  %}<img src="{{ ('images/questions'~vich_uploader_asset(question, 'imageFile')) | imagine_filter('col4_thumb') }}" alt="card-img-top" style="width: 100%; height: auto">{% endif %}
         </div>
     </div>
 
