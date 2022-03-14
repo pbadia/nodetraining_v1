@@ -3,7 +3,7 @@ vich_uploader:
 
     mappings:
         question_image:
-            uri_prefix: ""
+            uri_prefix: "images/questions"
             upload_destination : '%kernel.project_dir%/public_html/images/questions'
             delete_on_remove: true
             delete_on_update: true

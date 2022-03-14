@@ -32,15 +32,15 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    {% if app.request.get('_route') == 'home' %}
+                    {% if (app.request.get('_route') in ['home','quiz.play','quiz.results','quiz.result','question.random'] ) %}
                         {% if app.user %}
-                            {% if quiz %}
-                                <a class="nav-link" href="{{ path('quiz.play', {'id': quiz.id}) }}"><i class="fas fa-play-circle"></i> Reprendre le quizz</a>
+                            {% if quizId is defined and quizId != '' %}
+                                <a class="nav-link" href="{{ path('quiz.play', {'id': quizId}) }}"><i class="fas fa-play-circle"></i> Reprendre le quizz</a>
                             {% else %}
                                 <a class="nav-link" href="{{ path('quiz.new') }}"><i class="fas fa-play-circle"></i> Nouveau quizz</a>
                             {%  endif %}
                         {% else %}
-                            <a class="nav-link" href="{{ path('question.index') }}">Jouer sans se connecter<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{ path('question.random') }}">Voir une question sans se connecter<span class="sr-only">(current)</span></a>
                         {%  endif %}
                     {% endif %}
                 </li>

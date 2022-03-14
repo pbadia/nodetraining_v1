@@ -8,13 +8,13 @@
                     <h3>Mes résultats :</h3>
                 </div>
                 <div class="col text-right">
-                    <h3><i class="fas fa-trophy gold-medal"></i> {{ trophies['gold'] }}
-                    <i class="fas fa-trophy silver-medal"></i> {{ trophies['silver'] }}
-                    <i class="fas fa-trophy bronze-medal"></i> {{ trophies['bronze'] }}</h3>
+                    <h3>
+                        <i class="fas fa-trophy bronze-medal"></i> {{ trophies['bronze'] }}
+                        <i class="fas fa-trophy silver-medal"></i> {{ trophies['silver'] }}
+                        <i class="fas fa-trophy gold-medal"></i> {{ trophies['gold'] }}
+                    </h3>
                 </div>
             </div>
-
-
 
             {#
             {{ form_start(form) }}
@@ -43,41 +43,63 @@
 
     <div class="container mt-4">
         <h2>Mes quizz</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Thèmes associés <i class="fas fa-tag"></i></td>
-                    <td>Score <i class="fas fa-trophy"></i></td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-            {% for quiz in quizzes %}
-                <tr>
-                    <td class="align-middle">{{ quiz.number }}</td>
-                    <td class="align-middle">{{ quiz.themes }}</td>
-                    <td class="align-middle">
-                        <span
-                                    {% if quiz.score == 10 %}
-                                class="gold-medal"
-                            {% elseif quiz.score >= 8 %}
-                                class="silver-medal"
-                            {% elseif quiz.score >= 6 %}
-                                class="bronze-medal"
-                                    {% endif %}>{{ quiz.score }}</span></td>
-                    <td class="align-middle">
-                         <a href="{{ path ('quiz.result', {id: quiz.id}) }}" class="btn btn-node">Voir le quizz</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
 
-        {# display navigation #}
-        <div class="navigation mt-4 d-flex justify-content-center">
-            {{ knp_pagination_render(quizzes) }}
-        </div>
+        {% if quizzes is empty %}
+            <div class="row">
+                <div class="col-9">
+                    <h4>
+                        Vous n'avez aucun résultat !
+                    </h4>
+                </div>
+                <div class="col-3">
+                    <a href="{{ path ('quiz.new') }}" class="btn btn-node">Nouveau quizz</a>
+                </div>
+            </div>
+
+        {% else %}
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Thèmes associés <i class="fas fa-tag"></i></td>
+                        <td>Score <i class="fas fa-trophy"></i></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for quiz in quizzes %}
+                    <tr>
+                        <td class="align-middle">{{ quiz.number }}</td>
+                        <td class="align-middle">{{ quiz.themes }}</td>
+                        <td class="align-middle">
+                            <span
+                                        {% if quiz.score == 10 %}
+                                    class="gold-medal"
+                                {% elseif quiz.score >= 8 %}
+                                    class="silver-medal"
+                                {% elseif quiz.score >= 6 %}
+                                    class="bronze-medal"
+                                        {% endif %}>{{ quiz.score }}</span></td>
+                        <td class="align-middle">
+                            {% if quiz.isRunning %}
+                                <a href="{{ path ('quiz.play', {id: quiz.id}) }}" class="btn btn-node">Reprendre le quizz</a>
+                            {% else %}
+                                <a href="{{ path ('quiz.result', {id: quiz.id}) }}" class="btn btn-node">Voir le quizz</a>
+
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {# display navigation #}
+            <div class="navigation mt-4 d-flex justify-content-center">
+                {{ knp_pagination_render(quizzes) }}
+            </div>
+
+        {% endif %}
 
     </div>
 

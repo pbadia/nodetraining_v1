@@ -1,6 +1,6 @@
 <div class="card">
     {% if question.imageName %}
-        <img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('thumbnail') }}" alt="card-img-top" style="width: 100%; height: auto">
+        <img src="{{ vich_uploader_asset(question, 'imageFile') | imagine_filter('col4_thumb') }}" alt="card-img-top" style="width: 100%; height: auto">
     {% endif %}
    <div class="card-body">
        <h5 class="card-title">

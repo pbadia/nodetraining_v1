@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\QuestionSearch;
 use App\Form\QuestionSearchType;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\NodeVisitor\AbstractNodeVisitor;
 
 class QuestionController extends AbstractController
 {
@@ -59,9 +61,10 @@ class QuestionController extends AbstractController
      * @Route("/questions/{slug}-{id}", name="question.show", requirements={"slug": "[a-z0-9\-]*"})
      * @param Question $question
      * @param string $slug
+     * @param AnswerRepository $answerRepository
      * @return Response
      */
-    public function show(Question $question, string $slug) : Response
+    public function show(Question $question, string $slug, AnswerRepository $answerRepository) : Response
     {
         if ($question->getSlug() !== $slug)
         {
@@ -70,8 +73,33 @@ class QuestionController extends AbstractController
                 'slug' => $question->getSlug()
             ], 301);
         }
+
+        // Get the answers
+        $answers = $answerRepository->findByQuestion($question->getId());
+
         return $this->render('question/show.html.twig', [
-            'question' => $question
+            'question' => $question,
+            'answers' => $answers,
+        ]);
+    }
+
+    /**
+     * @Route("/questions/random", name="question.random")
+     * @param QuestionRepository $questionRepository
+     * @param AnswerRepository $answerRepository
+     * @return Response
+     */
+    public function random(QuestionRepository $questionRepository, AnswerRepository $answerRepository) : Response
+    {
+        // Get a random question
+        $question = $questionRepository->findRandomResultsQuery(1);
+
+        // Get the answers
+        $answers = $answerRepository->findByQuestion($question[0]->getId());
+
+        return $this->render('question/show.html.twig', [
+            'question' => $question[0],
+            'answers' => $answers
         ]);
     }
 }

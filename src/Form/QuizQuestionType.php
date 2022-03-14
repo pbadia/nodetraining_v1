@@ -6,6 +6,7 @@ use App\Entity\Answer;
 use App\Entity\QuizQuestion;
 use App\Form\DataTransformer\CollectionToAnswerTransformer;
 use App\Repository\AnswerRepository;
+use App\Service\QuizService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
@@ -26,6 +27,10 @@ class QuizQuestionType extends AbstractType
      */
     private $answerRepository;
 
+    /**
+     * QuizQuestionType constructor.
+     * @param AnswerRepository $answerRepository
+     */
     public function __construct(AnswerRepository $answerRepository)
     {
         $this->answerRepository = $answerRepository;
@@ -43,6 +48,7 @@ class QuizQuestionType extends AbstractType
                     'choices' => $this->fillAnswers($quizQuestion),
                     'expanded' => true,
                     'multiple' => false,
+                    'label' => false,
                 ]);
 
                 /*if ($this->answerRepository->getIsMultipleQuestion($quizQuestion->getQuestion()->getId())){
@@ -69,7 +75,7 @@ class QuizQuestionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => QuizQuestion::class,
+            'data_class' => QuizQuestion::class
         ]);
     }
 

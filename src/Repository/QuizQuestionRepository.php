@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\QuizQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -32,11 +34,30 @@ class QuizQuestionRepository extends ServiceEntityRepository
             ->andWhere('q.answer is null')
             //->having('count(q.answers) = 0')
             //->andWhere('q.answer IS NULL')
-            ->orderBy('q.question', 'ASC')
+            ->orderBy('q.number', 'ASC')
             ->setMaxResults(1)
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param $quizId
+     * @return mixed
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findNumberAnswered($quizId)
+    {
+        $qb = $this->createQueryBuilder('q');
+        $qb
+            ->select('count(q.id)')
+            ->andWhere('q.quiz = :val')
+            ->setParameter('val', $quizId)
+            ->andWhere('q.answer is not null')
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 

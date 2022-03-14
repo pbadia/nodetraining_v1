@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 use App\Repository\QuizRepository;
+use App\Service\QuizService;
 use phpDocumentor\Reflection\Types\Array_;
 use Psr\Log\LoggerInterface;
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,24 +16,13 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
-     * @param QuizRepository $repository
+     * @param QuizService $quizService
      * @return Response
      */
-    public function index(QuizRepository $repository){
-
-        // If a user is connected, check if a quiz is running
-        $quiz = [];
-        if ($this->isGranted('ROLE_USER')) {
-            $quiz = $repository->findByUser($this->getUser()->getId(), true);
-        }
-
-        // Set the quiz if it has been found
-        if (!empty($quiz)) {
-            $quiz = $quiz[0];
-        }
+    public function index(QuizService $quizService){
 
         return $this->render('pages/home.html.twig', [
-            'quiz' => $quiz
+            'quizId' => $quizService->getQuizId()
         ]);
     }
 }

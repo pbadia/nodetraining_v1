@@ -3,18 +3,16 @@
 
 namespace App\Controller;
 
-
-use App\Entity\Answer;
 use App\Entity\Quiz;
 use App\Entity\QuizQuestion;
 use App\Form\QuizQuestionType;
-use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizQuestionRepository;
 use App\Repository\QuizRepository;
+use App\Service\QuizService;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,21 +35,29 @@ class QuizController extends AbstractController
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var QuizService
+     */
+    private $quizService;
 
     /**
      * QuizController constructor.
      * @param QuizRepository $repository
      * @param EntityManagerInterface $em
+     * @param QuizService $quizService
      */
-    public function __construct(QuizRepository $repository, EntityManagerInterface $em)
+    public function __construct(QuizRepository $repository, EntityManagerInterface $em,
+                                QuizService $quizService)
     {
         $this->repository = $repository;
         $this->em = $em;
+        $this->quizService = $quizService;
     }
 
     /**
      * @Route("/quiz/new", name = "quiz.new")
      * @param QuestionRepository $questionRepository
+     * @param QuizRepository $quizRepository
      * @return Response
      */
     public function new(QuestionRepository $questionRepository, QuizRepository $quizRepository){
@@ -63,12 +69,12 @@ class QuizController extends AbstractController
         $user = $this->getUser();
 
         // Check if a quiz is already running
-        $quiz = $quizRepository->findByUser($this->getUser()->getId(), true);
+        $quizId = $this->quizService->getQuizId();
 
         // If a quiz is running, redirect to it
-        if (!empty($quiz)) {
+        if ($quizId <> ""){
             return $this->redirectToRoute('quiz.play', [
-                'id' => $quiz[0]->getId()]);
+                'id' => $quizId]);
         }
 
         // Pick random questions for the quiz
@@ -81,23 +87,30 @@ class QuizController extends AbstractController
         // Set the quiz number
         $quiz->setNumber($quizRepository->getMaxNumber($user->getId()) + 1);
 
-        // Todo card deck admin + index question, etc
-
         // Create the QuizQuestion items
+        $questionNumber = 1;
         foreach ($questions as $question)
         {
             $qq = new QuizQuestion();
             $qq->setQuiz($quiz);
             $qq->setQuestion($question);
+            $qq->setNumber($questionNumber);
             $this->em->persist($qq);
+
+            $questionNumber++;
 
             $quiz->addQuizQuestion($qq);
         }
         $this->em->persist($quiz);
         $this->em->flush();
 
+        // Update global variable
+        $this->quizService->setQuizId($quiz->getId());
+
         return $this->redirectToRoute('quiz.play', [
-            'id' => $quiz->getId()]);
+            'quiz' => $quiz,
+            'id' => $quiz->getId()
+        ]);
 
     }
 
@@ -112,8 +125,9 @@ class QuizController extends AbstractController
     {
         // Check if the current user can access this quiz
         $this->denyAccessUnlessGranted('QUIZ_VIEW', $quiz);
-        // Gets a quizQuestion item that has not been answered
-        $quizQuestion = $quizQuestionRepository->findNotAnswered($quiz->getId());
+
+        // Gets a collection of quizQuestion items that have not been answered
+        $quizQuestion = $quizQuestionRepository->findNotAnswered($this->quizService->getQuizId());
 
         // If all the questions have been answered
         if (empty($quizQuestion))
@@ -122,12 +136,14 @@ class QuizController extends AbstractController
             $quiz->setIsRunning(false);
             $this->em->persist($quiz);
             $this->em->flush();
+            $this->quizService->setQuizId("");
 
             // Redirect to the quiz results
             return $this->redirectToRoute('quiz.result', [
                 'id' => $quiz->getId()]);
         }
 
+        // Get the first question that has not been answered yet
         $quizQuestion = $quizQuestion[0];
 
         // Create the form
@@ -146,15 +162,20 @@ class QuizController extends AbstractController
 
             // Redirect to the next question
             return $this->redirectToRoute('quiz.play', [
-                'id' => $quiz->getId()]);
+                'id' => $quiz->getId(),
+            ]);
         }
+
 
         // Display the quiz
         return $this->render('quiz/show.html.twig', [
             'form' => $form->createView(),
-            'quizquestion' => $quizQuestion
+            'quizquestion' => $quizQuestion,
+            'quiz' => $quiz,
+            'quizId' => $this->quizService->getQuizId(),
         ]);
     }
+
 
     /**
      * @Route("/quiz/result/{id}", name="quiz.result")
@@ -172,7 +193,8 @@ class QuizController extends AbstractController
         // Display the quiz result
         return $this->render('quiz/result.html.twig', [
             'quiz' => $quiz,
-            'quizQuestions' => $quizQuestions
+            'quizQuestions' => $quizQuestions,
+            'quizId' => $this->quizService->getQuizId(),
         ]);
     }
 
@@ -183,7 +205,8 @@ class QuizController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function results(PaginatorInterface $paginator, QuizRepository $repository, Request $request)
+    public function results(PaginatorInterface $paginator, QuizRepository $repository,
+                            Request $request)
     {
         // TODO add filtering system for results (trophy, them, etc)
 
@@ -201,6 +224,7 @@ class QuizController extends AbstractController
         return $this->render('/quiz/results.html.twig', [
             'quizzes' => $quizzes,
             'trophies' => $repository->getTrophies($user->getId()),
+            'quizId' => $this->quizService->getQuizId(),
         ]);
 
     }

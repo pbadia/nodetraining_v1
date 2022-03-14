@@ -47,6 +47,7 @@
             <tr>
                 <td>Question</td>
                 <td>Actions</td>
+                <td>Active</td>
             </tr>
             </thead>
             <tbody>
@@ -61,6 +62,11 @@
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.id) }}">
                         <button class="btn btn-danger">Supprimer</button>
                     </form>
+                </td>
+                <td class="align-middle">
+                    {% if question.isAvailable %}
+                        <i class="fas fa-check"></i>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

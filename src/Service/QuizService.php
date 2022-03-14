@@ -2,14 +2,13 @@
 
 namespace App\Service;
 
-use App\Entity\Quiz;
 use App\Repository\QuizRepository;
 use Symfony\Component\Security\Core\Security;
 
 
 class QuizService
 {
-    private $quiz;
+    private $quizId = "";
 
     public function __construct(QuizRepository $repository, Security $security){
 
@@ -20,20 +19,18 @@ class QuizService
             $quiz = $repository->findByUser($security->getUser()->getId(), true);
         }
 
-        // Set the quiz if it has been found
+        // Set the quiz as running if it has been found
         if (!empty($quiz)) {
-            $quiz = $quiz[0];
+            $this->quizId = $quiz[0]->getId();
         }
-
-        $this->quiz = $quiz;
     }
 
-    public function getQuiz(){
-        return $this->quiz;
+    public function getQuizId(){
+        return $this->quizId;
     }
 
-    public function setQuiz(Quiz $quiz){
-        $this->quiz = $quiz;
+    public function setQuizId(bool $quizId){
+        $this->quizId = $quizId;
     }
 
 }

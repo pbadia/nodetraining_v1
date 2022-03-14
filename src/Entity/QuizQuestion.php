@@ -20,6 +20,11 @@ class QuizQuestion
     private $id;
 
     /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $number;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Quiz::class, inversedBy="quizQuestions")
      */
     private $quiz;
@@ -80,6 +85,22 @@ class QuizQuestion
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * @param mixed $number
+     */
+    public function setNumber($number): void
+    {
+        $this->number = $number;
     }
 
 }

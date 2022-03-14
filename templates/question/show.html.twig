@@ -7,7 +7,6 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col ml-4">
-                <h1>Question n° {{ question.id }}</h1>
                 <h2>{{ question.label }}</h2>
             </div>
         </div>
@@ -15,14 +14,39 @@
 
 <div class="container mt-4">
 
-    <div class="row">
-        <div class="col">
-            <h3>Thème : {{ question.themesToString }}</h3>
-            <h3>Difficulté : {{ question.getleveldifficulty }}</h3>
+    <div class="row flex">
+        <div class="col-12 mt-4">
+            <h4>Thème : {{ question.themesToString }}</h4>
+            <h4>Difficulté : {{ question.getleveldifficulty }}</h4>
         </div>
     </div>
 
-    <nav class="nav nav-bars mb-4"></nav>
+        <div class="card-body">
+
+            {% for answer in answers %}
+                <div class="row ml-3">
+                    <div class="icon-column">
+                        {% if answer.accuracy == 2 %}
+                            <i class="fas fa-check"></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-auto">
+                        {{ answer.label }}
+                    </div>
+
+                </div>
+            {% endfor %}
+
+            <p class="card-text">
+                <br>
+                {{ question.explanation }}
+            </p>
+
+        </div>
+
+    </div>
+
+
 </div>
 
 {% endblock %}
