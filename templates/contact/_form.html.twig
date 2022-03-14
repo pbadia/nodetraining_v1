@@ -1,0 +1,52 @@
+{{ form_start(form) }}
+<div class="row">
+<!--Grid column-->
+    <div class="col-md-9 mb-md-0 mb-5">
+
+        <!--Grid row-->
+        <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6">{{ form_row(form.name) }}</div>
+
+            <!--Grid column-->
+            <div class="col-md-6">{{ form_row(form.email) }}</div>
+
+        </div>
+
+        <!--Grid row-->
+        <div class="row">
+            <div class="col-md-12">{{ form_row(form.subject) }}</div>
+        </div>
+
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-md-12">{{ form_row(form.message) }}</div>
+        </div>
+
+        <div class="text-right">
+            <button class="btn btn-node">{{ button|default('Envoyer') }}</button>
+        </div>
+    </div>
+    <!--Grid column-->
+    <div class="col-md-3 text-center">
+        <ul class="list-unstyled mb-0">
+            <li><i class="fas fa-map-marker-alt fa-2x"></i>
+                <p>Pyrénées-Orientales, FRANCE</p>
+            </li>
+
+            {#<li><i class="fas fa-phone mt-4 fa-2x"></i>
+                <p>+ 01 234 567 89</p>
+            </li>#}
+
+            <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                <p>admin@nodeinfo.fr</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+{{ form_end(form) }}

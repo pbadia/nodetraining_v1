@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Contact' %}
+
+    {% block body %}
+
+        <div class="container">
+
+            <h1 class="text-center">Formulaire de contact</h1>
+
+            {{ include ('contact/_form.html.twig', {form: form, button: 'Envoyer'}) }}
+        </div>
+
+{% endblock %}
