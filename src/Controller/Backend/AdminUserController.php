@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class AdminUserController
@@ -54,9 +55,10 @@ class AdminUserController extends AbstractController
     /**
      * @Route("admin/user/new", name="admin.user.new")
      * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function new(Request $request) : Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder) : Response
     {
         $user = new User();
 
@@ -64,6 +66,12 @@ class AdminUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Encode the password
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            // Save the user
             $this->em->persist($user);
             $this->em->flush();
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
@@ -80,17 +88,23 @@ class AdminUserController extends AbstractController
      * @Route("admin/user/{id}", name="admin.user.edit", methods="GET|POST")
      * @param User $user
      * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function edit(User $user, Request $request) : Response
+    public function edit(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder) : Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Encode the password
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
             $this->em->persist($user);
             $this->em->flush();
-            $this->addFlash('success', 'Utilisateur ajouté avec succès');
+            $this->addFlash('success', 'Utilisateur modifié avec succès');
             return $this->redirectToRoute('admin.user.index');
         }
 
