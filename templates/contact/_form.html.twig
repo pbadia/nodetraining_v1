@@ -7,22 +7,32 @@
         <div class="row">
 
             <!--Grid column-->
-            <div class="col-md-6">{{ form_row(form.name) }}</div>
+            <div class="col-md-6">
+                {{ form_label(form.name, 'Nom') }}
+                {{ form_widget(form.name) }}
+            </div>
 
             <!--Grid column-->
-            <div class="col-md-6">{{ form_row(form.email) }}</div>
+            <div class="col-md-6">
+                {{ form_row(form.email) }}
+            </div>
 
         </div>
 
         <!--Grid row-->
         <div class="row">
-            <div class="col-md-12">{{ form_row(form.subject) }}</div>
+            <div class="col-md-12">
+                {{ form_label(form.subject, 'Objet') }}
+                {{ form_widget(form.subject) }}
+            </div>
         </div>
 
         <!--Grid row-->
         <div class="row">
             <!--Grid column-->
-            <div class="col-md-12">{{ form_row(form.message) }}</div>
+            <div class="col-md-12">
+                {{ form_row(form.message) }}
+            </div>
         </div>
 
         <div class="text-right">

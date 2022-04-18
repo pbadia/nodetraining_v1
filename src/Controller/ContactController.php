@@ -29,7 +29,7 @@ class ContactController extends AbstractController
      */
     public function contact(Request $request, QuizService $quizService, MailerInterface $mailer){
 
-        $defaultData = ['message' => 'Type your message here'];
+        $defaultData = ['message' => ''];
         $form = $this->createFormBuilder($defaultData)
             ->add('name', TextType::class)
             ->add('subject', TextType::class)

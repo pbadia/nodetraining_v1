@@ -2,7 +2,27 @@ var $collectionHolder;
 // setup an "add an answer" link
 var $addAnswerButton = $('<button id="js-answer-add" type="button" class="btn btn-secondary js-answer-add">Ajouter une réponse</button>');
 var $newAnswerDiv = $('<div></div>').append($addAnswerButton);
-jQuery(document).ready(function() {
+
+// JQuery
+/*jQuery(document).ready(function() {
+    // Get the div that holds the collection of answers
+    $collectionHolder = $(".js-answers-wrapper");
+    // Add a delete button to all of the existing answer elements
+    $collectionHolder.find('.js-answer').each(function() {
+        addAnswerFormDeleteLink($(this));
+    });
+    // Add the "add an answer" anchor
+    $collectionHolder.append($newAnswerDiv);
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $collectionHolder.data('index', $collectionHolder.find('input').length);
+    $addAnswerButton.on('click', function(e) {
+        // add a new answer form (see next code block)
+        addAnswerForm($collectionHolder, $newAnswerDiv);
+    });
+});*/
+// Vanilla js
+document.addEventListener("DOMContentLoaded", function() {
     // Get the div that holds the collection of answers
     $collectionHolder = $(".js-answers-wrapper");
     // Add a delete button to all of the existing answer elements
@@ -19,6 +39,7 @@ jQuery(document).ready(function() {
         addAnswerForm($collectionHolder, $newAnswerDiv);
     });
 });
+
 function addAnswerForm($collectionHolder, $newAnswerDiv) {
     // Get the data-prototype
     var prototype = $collectionHolder.data('prototype');
